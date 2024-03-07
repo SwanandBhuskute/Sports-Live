@@ -1,6 +1,6 @@
 // src/components/ArticleList.tsx
 import React, { useState, useEffect } from 'react';
-import { API_ENDPOINT } from '../config/constants';
+import { API_ENDPOINT } from '../../config/constants';
 
 interface Article {
   id: number;
@@ -12,8 +12,8 @@ interface Article {
     name: string;
   };
   date: string;
-  // content: string;
-  content: React.ReactNode;
+  content: string;
+  // content: React.ReactNode;
   teams: {
     id: number;
     name: string;
@@ -55,7 +55,8 @@ const ArticleList: React.FC = () => {
           <div key={article.id} className='bg-white rounded p-4 shadow-md'>
             <img src={article.thumbnail} alt={article.title} className='mb-4 rounded-lg w-full h-40 object-cover' />
             <h2 className='text-xl font-semibold mb-2'>{article.id}: {article.title}</h2>
-            <p className='text-gray-600 mb-4'>{article.summary}</p>
+            {/* <h2 className='text-xl font-semibold mb-2'>{article.content}</h2> */}
+            {/* <h2 className='text-xl font-semibold mb-2'>{article.summary}</h2> */}
             <button
               onClick={() => handleReadMore(article)}
               className='bg-blue-500 text-white px-2 py-1 rounded-md text-sm hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300'
@@ -70,7 +71,8 @@ const ArticleList: React.FC = () => {
         <div className='fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50'>
           <div className='bg-white rounded p-6 max-w-2xl overflow-y-auto'>
             <h2 className='text-2xl font-bold mb-4'>{selectedArticle.title}</h2>
-            <p className='text-gray-600 mb-4'>{selectedArticle.content}</p>
+            {/* <p className='text-gray-600 mb-4'>{selectedArticle.content}</p> */}
+                <p className='text-gray-600 mb-4'>{selectedArticle.summary}</p>
             <button
               onClick={handleCloseModal}
               className='bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700 focus:outline-none focus:ring focus:border-red-300'

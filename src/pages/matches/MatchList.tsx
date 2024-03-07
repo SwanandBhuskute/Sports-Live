@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { API_ENDPOINT } from '../config/constants';
+import { API_ENDPOINT } from '../../config/constants';
+
+interface Team {
+  id: number;
+  name: string;
+}
 
 interface Match {
   id: number;
   name: string;
   location: string;
+  endsAt: Date;
+  sportName: string;
+  isRunning: boolean;
+  teams: Team[];
 }
 
 const MatchList: React.FC = () => {
@@ -30,6 +39,7 @@ const MatchList: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {matches.map((match) => (
           <div key={match.id} className="bg-white rounded p-4 shadow-md">
+            <h2 className="text-2xl font-semibold mb-2">{match.sportName}</h2>
             <h2 className="text-xl font-semibold mb-2">{match.name}</h2>
             <p className="text-gray-600">{match.location}</p>
           </div>
