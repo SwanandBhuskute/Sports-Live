@@ -1,23 +1,21 @@
 // Home.tsx
 import React from 'react';
-import TeamandSportList from "../pages/teamAndSports/TeamandSportList" // Adjust the import based on your project structure
-import MatchList from '../pages/matches/MatchList'; // Adjust the import based on your project structure
-import ArticleList from '../pages/articles/ArticleList'; // Adjust the import based on your project structure
-
+import TeamandSportList from "../pages/teamAndSports/TeamandSportList";
+import MatchList from '../pages/matches/MatchList';
+import ArticleList from '../pages/articles/ArticleList';
+import Navbar from './NavBar';
 const Home: React.FC = () => {
   return (
     <div>
-      <h1>Welcome to the Home Page</h1>
+      <Navbar />
+      <h1 className='bg-green-500 text-red-800 text-2xl font-bold p-4 mb-4'>Welcome to the Home Page</h1>
       <div>
-        <h2>Sports</h2>
         <TeamandSportList />
       </div>
       <div>
-        <h2>Matches</h2>
         <MatchList />
       </div>
       <div>
-        <h2>Articles</h2>
         <ArticleList />
       </div>
     </div>

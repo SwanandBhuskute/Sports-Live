@@ -1,14 +1,18 @@
 import React from "react";
 import { createBrowserRouter, Navigate} from "react-router-dom";
-// import ArticleList from "../pages/articles/ArticleList";
+import ArticleList from "../pages/articles/ArticleList";
 // import MatchList from "../pages/matches/MatchList";
 // import TeamandSportList from "../pages/teamAndSports/TeamandSportList"
 import Signin from "../pages/signin";
 import Signup from "../pages/signup";
 import Logout from "../pages/logout";
 import Home from "../pages/Home";
+// @ts-ignore
 import ProtectedRoute from "./ProtectedRoute";
 import ErrorBoundary from "../components/ErrorBoundary";
+import MatchList from "../pages/matches/MatchList";
+import SportList from "../pages/teamAndSports/SportList";
+import TeamAndSportList from "../pages/teamAndSports/TeamandSportList";
 
 const router = createBrowserRouter([
     { path: "/", element: <Navigate to="/home" replace /> },
@@ -32,6 +36,30 @@ const router = createBrowserRouter([
             </ProtectedRoute>
     },
     // ErrorBoundary: () => <>Failed to load the page</>,
+    {
+        path: '/articles',
+        element: (
+          <ProtectedRoute>
+            <ArticleList />
+          </ProtectedRoute>
+        ),
+    },
+    {
+        path: '/matches',
+        element: (
+          <ProtectedRoute>
+            <MatchList />
+          </ProtectedRoute>
+        ),
+    },
+    {
+        path: '/teams',
+        element: (
+          <ProtectedRoute>
+            <TeamAndSportList />
+          </ProtectedRoute>
+        ),
+    },
 ]);
 
 export default router;

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { API_ENDPOINT } from '../../config/constants';
+import Navbar from '../NavBar';
 
 interface Sport {
   id: number;
@@ -49,6 +50,7 @@ const TeamAndSportDropdowns: React.FC = () => {
 
   return (
     <div className='flex space-x-4 justify-center'>
+      {/* <Navbar /> */}
       <div>
         <h1 className='bg-green-500 text-red-800 text-2xl font-bold p-4 mb-4'>Sport List</h1>
         <select

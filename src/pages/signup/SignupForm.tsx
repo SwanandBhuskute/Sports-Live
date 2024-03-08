@@ -15,12 +15,14 @@ const SignupForm: React.FC = () => {
     event.preventDefault();
   
     try {
+      console.log(userName, userEmail, userPassword);
+
       const response = await fetch(`${API_ENDPOINT}/users`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: userName, email: userEmail, password: userPassword }),
+        body: JSON.stringify({ userName, userEmail, userPassword }),
       });
-  
+      console.log("Fetch went")
       if (!response.ok) {
         throw new Error('Sign-up failed');
       }

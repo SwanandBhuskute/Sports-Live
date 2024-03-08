@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { API_ENDPOINT } from '../../config/constants';
+import Navbar from '../NavBar';
 
 interface Team {
   id: number;
@@ -35,6 +36,7 @@ const MatchList: React.FC = () => {
 
   return (
     <div>
+      {/* <Navbar /> */}
       <h1 className='bg-green-500 text-red-800 text-2xl font-bold p-4 mb-4'>Match List</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {matches.map((match) => (
