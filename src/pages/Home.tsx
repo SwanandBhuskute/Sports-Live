@@ -16,14 +16,14 @@ const Home: React.FC = () => {
           <LiveMatches/>
         </div>
         <div>
-          <MatchList />
-        </div>
-        <div>
-          <TeamandSportList />
-        </div>
-        <div>
           <ArticleList />
         </div>
+        {/* <div>
+          <MatchList />
+        </div> */}
+        {/* <div>
+          <TeamandSportList />
+        </div> */}
       </div>
   );
 };

@@ -38,7 +38,7 @@ const LiveMatches: React.FC = () => {
   const liveMatches = matches.filter((match) => match.isRunning);
 
   return (
-    <div className="bg-orange-400 rounded-lg p-4 m-2 shadow-md">
+    <div className="bg-orange-200 rounded-lg p-4 m-2 shadow-md">
       <h1 className='text-2xl font-bold p-2 rounded-lg m-2'>Live Matches</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {liveMatches.map((match) => (

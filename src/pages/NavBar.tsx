@@ -11,10 +11,11 @@ const Navbar: React.FC = () => {
   return (
     <nav className="bg-gray-800 px-2 py-2">
       <div className="flex justify-between items-center">
-        <Link to="/" className="text-white text-3xl font-bold">
+        <Link to="/" className="text-white text-3xl font-bold px-2">
           Sports Live
         </Link>
         <div className="flex space-x-4 text-white text-lg items-center">
+          <Link to="/home">Home</Link>
           <Link to="/articles">Articles</Link>
           <Link to="/matches">Matches</Link>
           <Link to="/teams">Teams</Link>

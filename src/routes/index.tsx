@@ -9,56 +9,56 @@ import Logout from "../pages/logout";
 import Home from "../pages/Home";
 // @ts-ignore
 import ProtectedRoute from "./ProtectedRoute";
-import ErrorBoundary from "../components/ErrorBoundary";
+// import ErrorBoundary from "../components/ErrorBoundary";
 import MatchList from "../pages/matches/MatchList";
-import SportList from "../pages/teamAndSports/SportList";
+// import SportList from "../pages/teamAndSports/SportList";
 import TeamAndSportList from "../pages/teamAndSports/TeamandSportList";
 
 const router = createBrowserRouter([
-    { path: "/", element: <Navigate to="/home" replace /> },
+    { path: '/', element: <Navigate to='/home' replace /> },
     {
-        path: "/signin", 
-        element: <Signin />
+      path: '/signin', 
+      element: <Signin />
     },
     {
-        path: "/signup", 
-        element: <Signup />
+      path: '/signup', 
+      element: <Signup />
     },
     { 
-        path: "/logout", 
-        element: <Logout /> 
+      path: '/logout', 
+      element: <Logout /> 
     },
     {
-        path: '/home',
-        element: 
-            <ProtectedRoute>
-                <Home />
-            </ProtectedRoute>
+      path: '/home',
+      element: 
+          <ProtectedRoute>
+              <Home />
+          </ProtectedRoute>
     },
     // ErrorBoundary: () => <>Failed to load the page</>,
     {
-        path: '/articles',
-        element: (
-          <ProtectedRoute>
-            <ArticleList />
-          </ProtectedRoute>
-        ),
+      path: '/articles',
+      element: (
+        <ProtectedRoute>
+          <ArticleList />
+        </ProtectedRoute>
+      ),
     },
     {
-        path: '/matches',
-        element: (
-          <ProtectedRoute>
-            <MatchList />
-          </ProtectedRoute>
-        ),
+      path: '/matches',
+      element: (
+        <ProtectedRoute>
+          <MatchList />
+        </ProtectedRoute>
+      ),
     },
     {
-        path: '/teams',
-        element: (
-          <ProtectedRoute>
-            <TeamAndSportList />
-          </ProtectedRoute>
-        ),
+      path: '/teams',
+      element: (
+        <ProtectedRoute>
+          <TeamAndSportList />
+        </ProtectedRoute>
+      ),
     },
 ]);
 

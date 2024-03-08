@@ -15,7 +15,7 @@ interface Team {
   plays: string;
 }
 
-const TeamAndSportDropdowns: React.FC = () => {
+const TeamAndSportList: React.FC = () => {
   const [sports, setSports] = useState<Sport[]>([]);
   const [teams, setTeams] = useState<Team[]>([]);
   const [selectedSport, setSelectedSport] = useState<string | null>(null);
@@ -56,7 +56,7 @@ const TeamAndSportDropdowns: React.FC = () => {
       {location.pathname === '/teams' && <Navbar />}
       <div className="mb-4">
         <h1 className="bg-green-500 text-red-800 text-2xl font-bold flex justify-center p-2 rounded-lg m-2">
-          Sport List
+          Select your Favourite Team
         </h1>
         <select
           value={selectedSport || ''}
@@ -97,4 +97,4 @@ const TeamAndSportDropdowns: React.FC = () => {
   );
 };
 
-export default TeamAndSportDropdowns;
+export default TeamAndSportList;
