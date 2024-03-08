@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { API_ENDPOINT } from '../../config/constants';
 import Navbar from '../NavBar';
+import { useLocation } from 'react-router-dom';
 
 interface Sport {
   id: number;
@@ -11,13 +12,15 @@ interface Team {
   id: number;
   name: string;
   country: string;
-  plays: string; // Use plays instead of sportId
+  plays: string;
 }
 
 const TeamAndSportDropdowns: React.FC = () => {
   const [sports, setSports] = useState<Sport[]>([]);
   const [teams, setTeams] = useState<Team[]>([]);
-  const [selectedSport, setSelectedSport] = useState<string | null>(null); // Change the type to string
+  const [selectedSport, setSelectedSport] = useState<string | null>(null);
+
+  const location = useLocation();
 
   useEffect(() => {
     const fetchSports = async () => {
@@ -49,16 +52,18 @@ const TeamAndSportDropdowns: React.FC = () => {
   };
 
   return (
-    <div className='flex space-x-4 justify-center'>
-      {/* <Navbar /> */}
-      <div>
-        <h1 className='bg-green-500 text-red-800 text-2xl font-bold p-4 mb-4'>Sport List</h1>
+    <div>
+      {location.pathname === '/teams' && <Navbar />}
+      <div className="mb-4">
+        <h1 className="bg-green-500 text-red-800 text-2xl font-bold flex justify-center p-2 rounded-lg m-2">
+          Sport List
+        </h1>
         <select
           value={selectedSport || ''}
           onChange={(e) => handleSportChange(e.target.value)}
-          className='p-2 border border-gray-300 rounded'
+          className="p-2 border border-gray-300 rounded w-full"
         >
-          <option value='' disabled>
+          <option value="" disabled>
             Select Sport
           </option>
           {sports.map((sport) => (
@@ -71,9 +76,11 @@ const TeamAndSportDropdowns: React.FC = () => {
 
       {selectedSport && (
         <div>
-          <h1 className='bg-green-500 text-red-800 text-2xl font-bold p-4 mb-4'>Team List</h1>
-          <select className='p-2 border border-gray-300 rounded'>
-            <option value='' disabled>
+          <h1 className="bg-green-500 text-red-800 text-2xl font-bold py-2 text-center rounded-lg mb-4">
+            Team List
+          </h1>
+          <select className="p-2 border border-gray-300 rounded w-full">
+            <option value="" disabled>
               Select Team
             </option>
             {teams

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { API_ENDPOINT } from '../../config/constants';
 import Navbar from '../NavBar';
+import { useLocation } from 'react-router-dom';
 
 interface Article {
   id: number;
@@ -24,6 +25,8 @@ interface Article {
 const ArticleList: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
+
+  const location = useLocation();
 
   useEffect(() => {
     // Function to fetch articles
@@ -50,8 +53,8 @@ const ArticleList: React.FC = () => {
 
   return (
     <div>
-      {/* <Navbar /> */}
-      <h1 className='bg-green-500 text-red-800 text-2xl font-bold p-4 mb-4'>Article List</h1>
+      {location.pathname === '/articles' && <Navbar />}
+      <h1 className='bg-green-500 text-red-800 text-2xl font-bold flex justify-center p-2 rounded-lg m-2'>Article List</h1>
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
         {articles.map((article) => (
           <div key={article.id} className='bg-white rounded p-4 shadow-md'>
