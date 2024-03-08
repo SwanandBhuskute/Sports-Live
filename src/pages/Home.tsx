@@ -1,6 +1,6 @@
 import React from 'react';
-import TeamandSportList from '../pages/teamAndSports/TeamandSportList';
-import MatchList from '../pages/matches/MatchList';
+// import TeamandSportList from '../pages/teamAndSports/TeamandSportList';
+// import MatchList from '../pages/matches/MatchList';
 import ArticleList from '../pages/articles/ArticleList';
 import Navbar from './NavBar';
 import LiveMatches from './matches/LiveMatches';
