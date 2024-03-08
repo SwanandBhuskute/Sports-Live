@@ -47,7 +47,7 @@ const SigninForm: React.FC = () => {
       </div>
       <button type="submit" className="w-full bg-gray-700 hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline-gray mt-4">Sign In</button>
       <p className="mt-2 text-center">
-        Already have an account? <Link to="/signup" className="text-blue-500">Sign in here</Link>
+        Don't have an account? <Link to="/signup" className="text-blue-500">Sign up here</Link>
       </p>
     </form>
   );
