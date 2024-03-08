@@ -3,8 +3,8 @@ import { createBrowserRouter, Navigate} from "react-router-dom";
 import ArticleList from "../pages/articles/ArticleList";
 // import MatchList from "../pages/matches/MatchList";
 // import TeamandSportList from "../pages/teamAndSports/TeamandSportList"
-import Signin from "../pages/signin";
-import Signup from "../pages/signup";
+import Signin from "../pages/signin/index";
+import Signup from "../pages/signup/index";
 import Logout from "../pages/logout";
 import Home from "../pages/Home";
 // @ts-ignore
