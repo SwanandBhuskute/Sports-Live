@@ -12,6 +12,7 @@ import TeamAndSportList from "../pages/teamAndSports/TeamandSportList";
 import NotFound from "../pages/NotFound";
 
 const router = createBrowserRouter([
+  { path: "/", element: <Navigate to="/home" replace /> },
   {
     path: "/signin",
     element: <Signin />
