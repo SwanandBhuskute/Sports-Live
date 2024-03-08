@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { API_ENDPOINT } from '../../config/constants';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 console.log('API_ENDPOINT:', API_ENDPOINT);
 
@@ -58,6 +58,9 @@ const SignupForm: React.FC = () => {
         <input type="password" name="userPassword" id="userPassword" value={userPassword} onChange={(e) => setUserPassword(e.target.value)} className="w-full border rounded-md py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:shadow-outline-blue" />
       </div>
       <button type="submit" className="w-full bg-gray-700 hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline-gray mt-4">Sign up</button>
+      <p className="mt-2 text-center">
+        Already have an account? <Link to="/signin" className="text-blue-500">Sign in here</Link>
+      </p>
     </form>
   );
 };
