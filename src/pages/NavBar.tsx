@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import PreferencesModal from './PreferencesModal';
 
 const Navbar: React.FC = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const [isPreferencesModalOpen, setPreferencesModalOpen] = useState(false);
 
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
+  };
+
+  const togglePreferencesModal = () => {
+    setPreferencesModalOpen(!isPreferencesModalOpen);
   };
 
   return (
@@ -15,7 +21,13 @@ const Navbar: React.FC = () => {
           Sports Live
         </Link>
         <div className="flex space-x-4 text-white text-lg items-center">
-          <Link to="/home">Home</Link>
+          <button
+            onClick={togglePreferencesModal}
+            className="text-white hover:bg-gray-700 px-3 py-2 rounded-md focus:outline-none group-hover:bg-gray-700"
+          >
+            Preferences
+          </button>
+          {/* <Link to="/home">Home</Link> */}
           <Link to="/articles">Articles</Link>
           <Link to="/matches">Matches</Link>
           <Link to="/teams">Teams</Link>
@@ -24,7 +36,7 @@ const Navbar: React.FC = () => {
               onClick={toggleDropdown}
               className="text-white hover:bg-gray-700 px-3 py-2 rounded-md focus:outline-none group-hover:bg-gray-700"
             >
-              <span >&#x2314;</span>
+              <span>&#x2314;</span>
             </button>
             <div
               className={`origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none transition-all duration-300 ${
@@ -49,6 +61,7 @@ const Navbar: React.FC = () => {
           </div>
         </div>
       </div>
+      {isPreferencesModalOpen && <PreferencesModal />}
     </nav>
   );
 };
