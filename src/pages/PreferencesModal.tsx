@@ -19,6 +19,7 @@ const PreferencesModal: React.FC = () => {
   const [sportsList, setSportsList] = useState<Sport[]>([]);
   const [teamsList, setTeamsList] = useState<Team[]>([]);
   const [modalOpen, setModalOpen] = useState<boolean>(true);
+  const auth_token = localStorage.getItem("auth_token");
 
   useEffect(() => {
     const fetchPreferences = async () => {
@@ -62,10 +63,28 @@ const PreferencesModal: React.FC = () => {
     }
   };
 
-  const handleSubmit = () => {
-    console.log('Selected Sports:', selectedSports);
-    console.log('Selected Teams:', selectedTeams);
-    setModalOpen(false);
+  const handleSubmit = async () => {
+    try {
+        const response = await fetch(`${API_ENDPOINT}/user/preferences`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${auth_token}`,
+          },
+          body: JSON.stringify({
+            sports: selectedSports,
+            teams: selectedTeams,
+          }),
+        });
+        if (!response.ok) {
+            throw new Error('Failed to update preferences');
+        }
+        console.log('Selected Sports:', selectedSports);
+        console.log('Selected Teams:', selectedTeams);
+        setModalOpen(false);
+      } catch (error) {
+        console.error('Error updating preferences:', error);
+      }
   };
 
   const handleCloseModal = () => {
