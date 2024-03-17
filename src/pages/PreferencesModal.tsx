@@ -19,7 +19,8 @@ const PreferencesModal: React.FC = () => {
   const [sportsList, setSportsList] = useState<Sport[]>([]);
   const [teamsList, setTeamsList] = useState<Team[]>([]);
   const [modalOpen, setModalOpen] = useState<boolean>(true);
-  const auth_token = localStorage.getItem("auth_token");
+  const authToken = localStorage.getItem("authToken");
+  // console.log("authToken in Preferences", authToken)
 
   useEffect(() => {
     const fetchPreferences = async () => {
@@ -69,18 +70,34 @@ const PreferencesModal: React.FC = () => {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${auth_token}`,
+            Authorization: `Bearer ${authToken}`,
           },
-          body: JSON.stringify({
-            sports: selectedSports,
-            teams: selectedTeams,
-          }),
+          body: JSON.stringify(
+            {
+                preferences: {
+                selectedSports,
+                selectedTeams,
+              }
+            }
+          ),
         });
         if (!response.ok) {
             throw new Error('Failed to update preferences');
         }
         console.log('Selected Sports:', selectedSports);
         console.log('Selected Teams:', selectedTeams);
+        // Save selected preferences in localStorage
+        const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+        localStorage.setItem(
+        'userData',
+        JSON.stringify({
+            ...userData,
+            preferences: {
+            selectedSports,
+            selectedTeams,
+            },
+        })
+        );
         setModalOpen(false);
       } catch (error) {
         console.error('Error updating preferences:', error);
