@@ -11,8 +11,20 @@ import MatchList from "../pages/matches/MatchList";
 import TeamAndSportList from "../pages/teamAndSports/TeamandSportList";
 import NotFound from "../pages/NotFound";
 
+// Function to check if the user is logged in
+const isLoggedIn = () => {
+  const authToken = localStorage.getItem("authToken");
+  return !!authToken;
+};
+
+// Function to render the Home component conditionally
+const renderHomeComponent = () => {
+  return isLoggedIn() ? <Navigate to="/home" replace /> : <Home />;
+};
+
+
 const router = createBrowserRouter([
-  { path: "/", element: <Navigate to="/home" replace /> },
+  { path: "/", element: renderHomeComponent() },
   {
     path: "/signin",
     element: <Signin />

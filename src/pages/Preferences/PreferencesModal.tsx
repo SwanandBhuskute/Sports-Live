@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { API_ENDPOINT } from '../config/constants';
+import { API_ENDPOINT } from '../../config/constants';
+import useUserPreferences from './useUserPreferences';
 
 interface Sport {
   id: number;
@@ -21,6 +22,16 @@ const PreferencesModal: React.FC = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(true);
   const authToken = localStorage.getItem("authToken");
   // console.log("authToken in Preferences", authToken)
+
+  const userPreferences = useUserPreferences(authToken);
+
+  // Use userPreferences to set selectedSports and selectedTeams
+  useEffect(() => {
+    if (userPreferences) {
+      setSelectedSports(userPreferences.selectedSports);
+      setSelectedTeams(userPreferences.selectedTeams);
+    }
+  }, [userPreferences]);
 
   useEffect(() => {
     const fetchPreferences = async () => {

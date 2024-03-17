@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import PreferencesModal from './PreferencesModal';
+import PreferencesModal from './Preferences/PreferencesModal';
 
 const Navbar: React.FC = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [isPreferencesModalOpen, setPreferencesModalOpen] = useState(false);
+  const isLoggedIn = !!localStorage.getItem('authToken');
 
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
@@ -27,38 +28,48 @@ const Navbar: React.FC = () => {
           >
             Preferences
           </button>
-          {/* <Link to="/home">Home</Link> */}
           <Link to="/articles">Articles</Link>
           <Link to="/matches">Matches</Link>
           <Link to="/teams">Teams</Link>
-          <div className="relative inline-block group">
-            <button
-              onClick={toggleDropdown}
-              className="text-white hover:bg-gray-700 px-3 py-2 rounded-md focus:outline-none group-hover:bg-gray-700"
-            >
-              <span>&#x2314;</span>
-            </button>
-            <div
-              className={`origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none transition-all duration-300 ${
-                isDropdownOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-              }`}
-            >
-              <div className="py-1">
-                <Link
-                  to="/home"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                >
-                  My Profile
-                </Link>
-                <Link
-                  to="/logout"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none"
-                >
-                  Logout
-                </Link>
+          {isLoggedIn ? (
+            <div className="relative inline-block group">
+              <button
+                onClick={toggleDropdown}
+                className="text-white hover:bg-gray-700 px-3 py-2 rounded-md focus:outline-none group-hover:bg-gray-700"
+              >
+                <span>&#x2314;</span>
+              </button>
+              <div
+                className={`origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none transition-all duration-300 ${
+                  isDropdownOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                }`}
+              >
+                <div className="py-1">
+                  <Link
+                    to="/home"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    My Profile
+                  </Link>
+                  <Link
+                    to="/logout"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none"
+                  >
+                    Logout
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <>
+              <Link to="/signup" className="text-white hover:bg-gray-700 px-3 py-2 rounded-md focus:outline-none group-hover:bg-gray-700">
+                Sign Up
+              </Link>
+              <Link to="/signin" className="text-white hover:bg-gray-700 px-3 py-2 rounded-md focus:outline-none group-hover:bg-gray-700">
+                Sign In
+              </Link>
+            </>
+          )}
         </div>
       </div>
       {isPreferencesModalOpen && <PreferencesModal />}
