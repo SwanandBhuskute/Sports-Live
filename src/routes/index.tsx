@@ -8,6 +8,7 @@ import Home from "../pages/Home";
 import MatchList from "../pages/matches/MatchList";
 import TeamAndSportList from "../pages/teamAndSports/TeamandSportList";
 import NotFound from "../pages/NotFound";
+import UserDetails from "../pages/UserDetails";
 
 // Function to check if the user is logged in
 const isLoggedIn = () => {
@@ -25,10 +26,11 @@ const router = createBrowserRouter([
   { path: "/signin", element: <Signin /> },
   { path: "/signup", element: <Signup /> },
   { path: "/logout", element: <Logout /> },
-  { path: "/home", element: <Home /> }, // No ProtectedRoute here
-  { path: '/articles', element: <ArticleList /> }, // No ProtectedRoute here
-  { path: '/matches', element: <MatchList /> }, // No ProtectedRoute here
-  { path: '/teams', element: <TeamAndSportList /> }, // No ProtectedRoute here
+  { path: "/user", element: <UserDetails /> },
+  { path: "/home", element: <Home /> },
+  { path: '/articles', element: <ArticleList /> },
+  { path: '/matches', element: <MatchList /> },
+  { path: '/teams', element: <TeamAndSportList /> },
   { path: "*", element: <NotFound /> },
 ]);
 
