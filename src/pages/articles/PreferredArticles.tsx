@@ -53,12 +53,20 @@ const PreferredArticles: React.FC<Props> = ({ selectedSports, selectedTeams }) =
     );
   });
 
-  const handleReadMore = (article: Article) => {
-    setSelectedArticleReadMore(article);
+  const handleReadMore = async (article: Article) => {
+    try {
+      const response = await fetch(`${API_ENDPOINT}/articles/${article.id}`);
+      const data = await response.json();
+      setSelectedArticleReadMore(data);
+      document.body.style.overflow = 'hidden';
+    } catch (error) {
+      console.error('Error fetching article details:', error);
+    }
   };
 
   const handleCloseModal = () => {
     setSelectedArticleReadMore(null);
+    document.body.style.overflow = 'auto';
   };
 
   return (
@@ -66,31 +74,43 @@ const PreferredArticles: React.FC<Props> = ({ selectedSports, selectedTeams }) =
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {preferredArticles.map((article) => (
           <div key={article.id} className='bg-white rounded p-4 shadow-md'>
-          <img src={article.thumbnail} alt={article.title} className='mb-4 rounded-lg w-full h-40 object-cover' />
-          <h2 className='text-xl font-semibold mb-2'>{article.id}: {article.title}</h2>
-          <button
-            onClick={() => handleReadMore(article)}
-            className='bg-blue-500 text-white px-2 py-1 rounded-md text-sm hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300'
-          >
-            Read more
-          </button>
-        </div>
+            <img src={article.thumbnail} alt={article.title} className='mb-4 rounded-lg w-full h-40 object-cover' />
+            <h2 className='text-xl font-semibold mb-2'>{article.id}: {article.title}</h2>
+            <button
+              onClick={() => handleReadMore(article)}
+              className='bg-blue-500 text-white px-2 py-1 rounded-md text-sm hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300'
+            >
+              Read more
+            </button>
+          </div>
         ))}
       </div>
       {selectedArticleReadMore && (
-          <div className='fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50'>
-            <div className='bg-white rounded p-6 max-w-2xl overflow-y-auto'>
-              <h2 className='text-2xl font-bold mb-4'>{selectedArticleReadMore.title}</h2>
-              <p className='text-gray-600 mb-4'>{selectedArticleReadMore.summary}</p>
-              <button
-                onClick={handleCloseModal}
-                className='bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700 focus:outline-none focus:ring focus:border-red-300'
-              >
-                Close
-              </button>
-            </div>
+        <div className='fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50'>
+          <div className='bg-gray-300 rounded p-6 max-w-2xl mx-auto my-8 max-h-full overflow-y-auto'>
+            <img src={selectedArticleReadMore.thumbnail} alt={selectedArticleReadMore.title} className='mb-4 rounded-lg w-full h-40 object-cover' />
+            <h2 className='text-2xl font-bold mb-4'>{selectedArticleReadMore.title}</h2>
+            <p className='mb-4'>{selectedArticleReadMore.content}</p>
+            <p className="font-semibold">Ends at: {new Date(selectedArticleReadMore.date).toLocaleString()}</p>
+            {selectedArticleReadMore.teams.length > 0 && (
+              <div className="flex justify-between items-center mt-2">
+                <p className="font-semibold">Teams:</p>
+                <div className="flex flex-wrap gap-1">
+                  {selectedArticleReadMore.teams.map((team) => (
+                    <span key={team.id} className="bg-gray-200 px-2 py-1 rounded">{team.name}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+            <button
+              onClick={handleCloseModal}
+              className='bg-red-500 text-white px-4 py-2 mt-3 rounded-md hover:bg-red-700 focus:outline-none focus:ring focus:border-red-300'
+            >
+              Close
+            </button>
           </div>
-        )}
+        </div>
+      )}
     </>
   );
 };

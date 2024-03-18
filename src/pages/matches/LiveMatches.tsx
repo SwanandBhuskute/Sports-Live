@@ -45,14 +45,18 @@ const LiveMatches: React.FC = () => {
 
   return (
     <div className="bg-orange-200 rounded-lg p-4 m-2 shadow-md">
-      <h1 className='text-2xl font-bold p-2 rounded-lg m-2'>Live Matches</h1>
+      {/* <h1 className='text-2xl font-bold p-2 rounded-lg m-2'>Live Matches</h1> */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {liveMatches.map((match) => (
-          <div key={match.id} className="bg-white rounded p-4 shadow-md">
+          <div key={match.id} className="relative bg-white rounded p-4 shadow-md">
+            {/* Display "Live" text at the top right corner */}
+            <div className="absolute top-0 right-0 p-1 text-red-500 font-bold rounded-full">
+              &#x25cf; Live
+            </div>
             {/* Display match details */}
-            <h2 className="text-2xl font-semibold mb-2">{match.sportName}</h2>
+            <h2 className="text-2xl font-bold mb-2">{match.sportName}</h2>
             <h2 className="text-xl font-semibold mb-2">{match.name}</h2>
-            <p className="text-gray-600">Location: {match.location}</p>
+            <p className="text-gray-700">Location: {match.location}</p>
             <div className="flex justify-between items-center mt-4">
               <p className="text-gray-600">Teams:</p>
               <div className="flex flex-wrap gap-2">

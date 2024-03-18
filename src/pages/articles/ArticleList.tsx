@@ -44,29 +44,38 @@ const ArticleList: React.FC = () => {
     fetchArticles();
   }, []);
 
+  
+  const handleSportClick = (sport: string) => {
+    setSelectedSport(sport === selectedSport ? null : sport);
+  };
+
+  
+  const handleReadMore = async (article: Article) => {
+    try {
+      const response = await fetch(`${API_ENDPOINT}/articles/${article.id}`);
+      const data = await response.json();
+      setSelectedArticle(data);
+      document.body.style.overflow = 'hidden';
+    } catch (error) {
+      console.error('Error fetching article details:', error);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setSelectedArticle(null);
+    document.body.style.overflow = 'auto';
+  };
+  
   // Retrieve selected sports from localStorage if user is logged in
   const storedData = localStorage.getItem('userData');
   const userData = storedData ? JSON.parse(storedData) : {};
   const selectedSports = isLoggedIn ? userData.preferences?.selectedSports || [] : [];
   const selectedTeams = isLoggedIn ? userData.preferences?.selectedTeams || [] : [];
-
-  const handleSportClick = (sport: string) => {
-    setSelectedSport(sport === selectedSport ? null : sport);
-  };
-
+  
   const filteredArticles = selectedSport
   ? articles.filter((article) => article.sport.name === selectedSport)
   : articles;
-
-  const handleReadMore = (article: Article) => {
-    setSelectedArticle(article);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedArticle(null);
-  };
-
-
+  
   return (
     <div className="flex">
       {/* Left Side (Article List) */}
@@ -91,20 +100,20 @@ const ArticleList: React.FC = () => {
                   onClick={() => setSelectedSport(null)}
                   className={`px-6 py-3 rounded-md ${selectedSport === null ? 'bg-blue-600 text-white font-semibold' : 'bg-gray-400 text-gray-800 font-semibold'} hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300`}
                   >
-                  Preferred Articles
+                  Your choice
                 </button>
                 {!selectedSport && <PreferredArticles selectedSports={selectedSports} selectedTeams={selectedTeams}/>}
               </>
             )}
           </div>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-            {selectedSport && filteredArticles.map((article) => (
+            {(selectedSport || !isLoggedIn) && filteredArticles.map((article) => (
               <div key={article.id} className='bg-white rounded p-4 shadow-md'>
                 <img src={article.thumbnail} alt={article.title} className='mb-4 rounded-lg w-full h-40 object-cover' />
-                <h2 className='text-xl font-semibold mb-2'>{article.id}: {article.title}</h2>
+                <h2 className='text-xl font-semibold mb-2'>{article.title}</h2>
                 <button
                   onClick={() => handleReadMore(article)}
-                  className='bg-blue-500 text-white px-2 py-1 rounded-md text-sm hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300'
+                  className='bg-blue-600 text-white px-2 py-1 rounded-md text-sm hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300'
                 >
                   Read more
                 </button>
@@ -113,22 +122,38 @@ const ArticleList: React.FC = () => {
           </div>
         </div>
 
-        {selectedArticle && (
-          <div className='fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50'>
-            <div className='bg-white rounded p-6 max-w-2xl overflow-y-auto'>
-              <h2 className='text-2xl font-bold mb-4'>{selectedArticle.title}</h2>
-              <p className='text-gray-600 mb-4'>{selectedArticle.summary}</p>
-              <button
-                onClick={handleCloseModal}
-                className='bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700 focus:outline-none focus:ring focus:border-red-300'
-              >
-                Close
-              </button>
-            </div>
+        {/* Modal for selected article */}
+        <div className={`fixed top-0 left-0 w-full h-full overflow-y-auto flex items-center justify-center bg-black bg-opacity-50 transition-opacity ${selectedArticle ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+          <div className="bg-gray-300 rounded p-6 max-w-2xl mx-auto my-8 max-h-full overflow-y-auto">
+            {/* Modal content */}
+            {selectedArticle && (
+              <>
+                <img src={selectedArticle.thumbnail} alt={selectedArticle.title} className='mb-4 rounded-lg w-full h-40 object-cover' />
+                <h2 className='text-2xl font-bold mb-4'>{selectedArticle.title}</h2>
+                <p className='mb-4'>{selectedArticle.content}</p>
+                <p className="font-semibold">Ends at: {new Date(selectedArticle.date).toLocaleString()}</p>
+                {selectedArticle.teams.length > 0 && (
+                  <div className="flex justify-between items-center mt-2">
+                    <p className="font-semibold">Teams:</p>
+                    <div className="flex flex-wrap gap-1">
+                      {selectedArticle.teams.map((team) => (
+                        <span key={team.id} className="bg-gray-200 px-2 py-1 rounded">{team.name}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                <button
+                  onClick={handleCloseModal}
+                  className='bg-red-500 text-white px-4 py-2 mt-3 rounded-md hover:bg-red-700 focus:outline-none focus:ring focus:border-red-300'
+                >
+                  Close
+                </button>
+              </>
+            )}
           </div>
-        )}
-      </div>
+        </div>
 
+      </div>
       {/* Right Side (Team and Sport Dropdowns) */}
       {location.pathname === '/home' && (
         <div className="w-1/3">

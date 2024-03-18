@@ -41,26 +41,27 @@ const PreferredMatches: React.FC<Props> = ({ selectedSports }) => {
   
   return (
     <>
+      <h1 className='text-xl font-bold p-2 rounded-lg m-2 display-block'>Your Picked</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {preferredMatches.map((match) => (
-          <>
-            <h1 className='text-xl font-semibold p-2 rounded-lg m-2'>Your own feed</h1>
-            <div key={match.id} className="bg-white rounded p-4 shadow-md">
-              {/* Display match details */}
-              <h2 className="text-2xl font-semibold mb-2">{match.sportName}</h2>
-              <h2 className="text-xl font-semibold mb-2">{match.name}</h2>
-              <p className="text-gray-600 mb-2">Location: {match.location}</p>
-              <p className="text-gray-600">Ends at: {new Date(match.endsAt).toLocaleString()}</p>
-              <div className="flex justify-between items-center mt-2">
-                <p className="text-gray-600">Teams:</p>
-                <div className="flex flex-wrap gap-2">
-                  {match.teams.map((team) => (
-                    <span key={team.id} className="bg-gray-200 px-2 py-1 rounded">{team.name}</span>
-                    ))}
-                </div>
+          <div key={match.id} className="relative bg-white rounded p-3 shadow-md">
+            {match.isRunning && <div className="absolute top-0 right-0 p-1 text-red-500 font-bold rounded-full">
+              &#x25cf; Live
+            </div>}
+            {/* Display match details */}
+            <h2 className="text-2xl font-bold mb-2">{match.sportName}</h2>
+            <h2 className="text-xl font-semibold mb-2">{match.name}</h2>
+            <p className="text-gray-700 mb-2">Location: {match.location}</p>
+            <p className="text-gray-700">Ends at: {new Date(match.endsAt).toLocaleString()}</p>
+            <div className="flex justify-between items-center mt-2">
+              <p className="text-gray-600">Teams:</p>
+              <div className="flex flex-wrap gap-2">
+                {match.teams.map((team) => (
+                  <span key={team.id} className="bg-gray-200 px-2 py-1 rounded">{team.name}</span>
+                  ))}
               </div>
             </div>
-          </>
+          </div>
         ))}
       </div>
     </>
