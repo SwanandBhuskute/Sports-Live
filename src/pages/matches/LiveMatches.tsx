@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import { API_ENDPOINT } from "../../config/constants";
+import PreferredMatches from "./PreferredMatches";
+import useAuthentication from '../../hooks/useAuthentication'; 
 
 interface Team {
   id: number;
@@ -19,7 +20,7 @@ interface Match {
 
 const LiveMatches: React.FC = () => {
   const [matches, setMatches] = useState<Match[]>([]);
-//   const location = useLocation();
+  const isLoggedIn = useAuthentication(); // Use the custom hook to get authentication status
 
   useEffect(() => {
     const fetchMatches = async () => {
@@ -37,6 +38,11 @@ const LiveMatches: React.FC = () => {
 
   const liveMatches = matches.filter((match) => match.isRunning);
 
+  // Retrieve selected sports from localStorage if user is logged in
+  const storedData = localStorage.getItem('userData');
+  const userData = storedData ? JSON.parse(storedData) : {};
+  const selectedSports = isLoggedIn ? userData.preferences?.selectedSports || [] : [];
+
   return (
     <div className="bg-orange-200 rounded-lg p-4 m-2 shadow-md">
       <h1 className='text-2xl font-bold p-2 rounded-lg m-2'>Live Matches</h1>
@@ -46,10 +52,20 @@ const LiveMatches: React.FC = () => {
             {/* Display match details */}
             <h2 className="text-2xl font-semibold mb-2">{match.sportName}</h2>
             <h2 className="text-xl font-semibold mb-2">{match.name}</h2>
-            <p className="text-gray-600">{match.location}</p>
+            <p className="text-gray-600">Location: {match.location}</p>
+            <div className="flex justify-between items-center mt-4">
+              <p className="text-gray-600">Teams:</p>
+              <div className="flex flex-wrap gap-2">
+                {match.teams.map((team) => (
+                  <span key={team.id} className="bg-gray-200 px-2 py-1 rounded">{team.name}</span>
+                ))}
+              </div>
+            </div>
           </div>
         ))}
       </div>
+      {/* Render PreferredMatches component only if user is logged in */}
+      {isLoggedIn && <PreferredMatches selectedSports={selectedSports}/>}
     </div>
   );
 };

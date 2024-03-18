@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import PreferencesModal from './Preferences/PreferencesModal';
+import useAuthentication from '../hooks/useAuthentication'; 
 
 const Navbar: React.FC = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [isPreferencesModalOpen, setPreferencesModalOpen] = useState(false);
-  const isLoggedIn = !!localStorage.getItem('authToken');
+  const isLoggedIn = useAuthentication(); // Use the custom hook to get authentication status
 
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
@@ -28,6 +29,7 @@ const Navbar: React.FC = () => {
           >
             Preferences
           </button>
+          <Link to="/home">Home</Link>
           <Link to="/articles">Articles</Link>
           <Link to="/matches">Matches</Link>
           <Link to="/teams">Teams</Link>

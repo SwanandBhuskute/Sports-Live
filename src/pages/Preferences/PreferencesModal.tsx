@@ -21,40 +21,9 @@ const PreferencesModal: React.FC = () => {
   const [teamsList, setTeamsList] = useState<Team[]>([]);
   const [modalOpen, setModalOpen] = useState<boolean>(true);
   const authToken = localStorage.getItem("authToken");
-  // console.log("authToken in Preferences", authToken)
 
   const userPreferences = useUserPreferences(authToken);
 
-  // Use userPreferences to set selectedSports and selectedTeams
-  useEffect(() => {
-    if (userPreferences) {
-      setSelectedSports(userPreferences.selectedSports);
-      setSelectedTeams(userPreferences.selectedTeams);
-    }
-  }, [userPreferences]);
-
-  useEffect(() => {
-    const fetchPreferences = async () => {
-      try {
-        const sportsResponse = await fetch(`${API_ENDPOINT}/sports`);
-        const sportsData = await sportsResponse.json();
-        setSportsList(sportsData.sports);
-
-        const teamsResponse = await fetch(`${API_ENDPOINT}/teams`);
-        const teamsData = await teamsResponse.json();
-        setTeamsList(teamsData);
-
-        if (!sportsResponse.ok || !teamsResponse.ok) {
-          throw new Error('Failed to fetch data');
-        }
-
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchPreferences();
-  }, []);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = event.target;
@@ -77,44 +46,75 @@ const PreferencesModal: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
-        const response = await fetch(`${API_ENDPOINT}/user/preferences`, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${authToken}`,
-          },
-          body: JSON.stringify(
-            {
-                preferences: {
-                selectedSports,
-                selectedTeams,
-              }
-            }
-          ),
-        });
-        if (!response.ok) {
-            throw new Error('Failed to update preferences');
-        }
-        console.log('Selected Sports:', selectedSports);
-        console.log('Selected Teams:', selectedTeams);
-        // Save selected preferences in localStorage
-        const userData = JSON.parse(localStorage.getItem('userData') || '{}');
-        localStorage.setItem(
-        'userData',
-        JSON.stringify({
-            ...userData,
-            preferences: {
+      const response = await fetch(`${API_ENDPOINT}/user/preferences`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({
+          preferences: {
             selectedSports,
             selectedTeams,
-            },
-        })
-        );
-        setModalOpen(false);
-      } catch (error) {
-        console.error('Error updating preferences:', error);
+          }
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update preferences');
       }
+      // Refetch matches and live matches after successful update
+      
+      // Save selected preferences in localStorage
+      const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+      localStorage.setItem(
+        'userData',
+        JSON.stringify({
+          ...userData,
+          preferences: {
+            selectedSports,
+            selectedTeams,
+          },
+        })
+      );
+
+      setModalOpen(false);
+    } catch (error) {
+      console.error('Error updating preferences:', error);
+    }
   };
 
+
+  // Use userPreferences to set selectedSports and selectedTeams
+  useEffect(() => {
+    if (userPreferences) {
+      setSelectedSports(userPreferences.selectedSports || []);
+      setSelectedTeams(userPreferences.selectedTeams || []);
+    }
+  }, [userPreferences]);
+
+  useEffect(() => {
+    const fetchPreferences = async () => {
+      try {
+        const sportsResponse = await fetch(`${API_ENDPOINT}/sports`);
+        const sportsData = await sportsResponse.json();
+        setSportsList(sportsData.sports);
+  
+        const teamsResponse = await fetch(`${API_ENDPOINT}/teams`);
+        const teamsData = await teamsResponse.json();
+        setTeamsList(teamsData);
+  
+        if (!sportsResponse.ok || !teamsResponse.ok) {
+          throw new Error('Failed to fetch data');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+  
+    fetchPreferences();
+  }, [userPreferences]);
+  
   const handleCloseModal = () => {
     setModalOpen(false);
   };
