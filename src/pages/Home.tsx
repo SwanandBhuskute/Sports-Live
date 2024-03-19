@@ -9,7 +9,7 @@ const Home: React.FC = () => {
   return (
       <div>
         <Navbar/>
-        <h1 className="bg-green-500 text-red-800 text-2xl font-bold flex justify-center rounded-lg p-2 m-2">
+        <h1 className="bg-gray-800 text-white text-2xl font-bold flex justify-center rounded-lg p-2 m-2">
           Welcome to the Home Page
         </h1>
         <div>

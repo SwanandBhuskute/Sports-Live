@@ -28,6 +28,7 @@ const ArticleList: React.FC = () => {
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
   const [selectedSport, setSelectedSport] = useState<string | null>(null);
   const location = useLocation();
+  const [loading, setLoading] = useState<boolean>(true); // Loading state
   const isLoggedIn = useAuthentication(); // Use the custom hook to get authentication status
 
   useEffect(() => {
@@ -36,13 +37,16 @@ const ArticleList: React.FC = () => {
         const response = await fetch(`${API_ENDPOINT}/articles`);
         const data = await response.json();
         setArticles(data);
+        setLoading(false); // Set loading to false once data is fetched
       } catch (error) {
         console.error('Error fetching articles:', error);
+        setLoading(false); // Set loading to false in case of error
       }
     };
 
     fetchArticles();
   }, []);
+
 
   
   const handleSportClick = (sport: string) => {
@@ -79,11 +83,12 @@ const ArticleList: React.FC = () => {
   return (
     <div className="flex">
       {/* Left Side (Article List) */}
-      <div className={location.pathname === '/home' ? 'w-2/3' : 'flex-1'}>
+      <div className={location.pathname === '/home' ? 'w-2/3 h-full overflow-y-auto' : 'flex-1'}>
         {location.pathname === '/articles' && <Navbar />}
-        <h1 className='bg-green-500 text-red-800 text-2xl font-bold flex justify-center p-2 rounded-lg m-2'>Trending News</h1>
+        <h1 className='bg-gray-800 text-white text-2xl font-bold flex justify-center p-2 rounded-lg m-2'>Trending News</h1>
         <div className="bg-yellow-200 rounded-lg p-4 m-2 shadow-md">
           <div className="flex flex-wrap gap-4 mb-4 flex justify-center">
+            {loading && <p>Loading...</p>}
             {/* Create buttons for each sport */}
             {Array.from(new Set(articles.map((article) => article.sport.name))).map((sport) => (
               <button
@@ -156,7 +161,7 @@ const ArticleList: React.FC = () => {
       </div>
       {/* Right Side (Team and Sport Dropdowns) */}
       {location.pathname === '/home' && (
-        <div className="w-1/3">
+        <div className="w-1/3 overflow-y-auto">
           <TeamAndSportList />
         </div>
       )}

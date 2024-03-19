@@ -27,6 +27,7 @@ const MatchList: React.FC = () => {
   const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedSport, setSelectedSport] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const location = useLocation();
 
@@ -36,8 +37,10 @@ const MatchList: React.FC = () => {
         const response = await fetch(`${API_ENDPOINT}/matches`);
         const data = await response.json();
         setMatches(data.matches);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching matches:', error);
+        setLoading(false);
       }
     };
 
@@ -73,11 +76,12 @@ const MatchList: React.FC = () => {
   return (
     <div>
       {location.pathname === '/matches' && <Navbar />}
-      <h1 className='bg-green-500 text-red-800 text-2xl font-bold flex justify-center p-2 rounded-lg m-2'>Match List</h1>
+      <h1 className='bg-gray-800 text-white text-2xl font-bold flex justify-center p-2 rounded-lg m-2'>Match List</h1>
       <div className="bg-yellow-200 rounded-lg p-4 m-2 shadow-md">
         {location.pathname === '/matches' && <LiveMatches />}
         <div className="flex flex-wrap gap-4 mb-4 flex justify-center">
           {/* Create buttons for each sport */}
+          {loading && <p>Loading...</p>}
           {Array.from(new Set(matches.map((match) => match.sportName))).map((sport) => (
             <button
               key={sport}
@@ -90,8 +94,13 @@ const MatchList: React.FC = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredMatches.map((match) => (
-            <div key={match.id} className="bg-white rounded p-4 shadow-md">
+            <div key={match.id} className="bg-white rounded p-4 shadow-md relative">
               {/* Display match details */}
+              {match.isRunning && (
+                <div className="flex absolute top-0 right-0 p-1 text-red-500 font-bold rounded-full">
+                  &#x25cf;Live
+                </div>
+              )}
               <h2 className="text-2xl font-semibold mb-2">{match.sportName}</h2>
               <h2 className="text-xl font-semibold mb-2">{match.name}</h2>
               <p className="text-gray-600">{match.location}</p>
@@ -105,7 +114,6 @@ const MatchList: React.FC = () => {
           ))}
         </div>
       </div>
-
       {/* Modal for selected match */}
       {selectedMatch && (
         <div className={`fixed top-0 left-0 w-full h-full overflow-y-auto flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300 ${isModalOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>

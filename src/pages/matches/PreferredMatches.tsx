@@ -22,6 +22,7 @@ interface Match {
 
 const PreferredMatches: React.FC<Props> = ({ selectedSports }) => {
   const [matches, setMatches] = useState<Match[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchMatches = async () => {
@@ -29,8 +30,10 @@ const PreferredMatches: React.FC<Props> = ({ selectedSports }) => {
         const response = await fetch(`${API_ENDPOINT}/matches`);
         const data = await response.json();
         setMatches(data.matches);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching matches:', error);
+        setLoading(false);
       }
     };
 
@@ -43,10 +46,11 @@ const PreferredMatches: React.FC<Props> = ({ selectedSports }) => {
     <>
       <h1 className='text-xl font-bold p-2 rounded-lg m-2 display-block'>Your Picked</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {loading && <p>Loading...</p>}
         {preferredMatches.map((match) => (
           <div key={match.id} className="relative bg-white rounded p-3 shadow-md">
-            {match.isRunning && <div className="absolute top-0 right-0 p-1 text-red-500 font-bold rounded-full">
-              &#x25cf; Live
+            {match.isRunning && <div className="flex absolute top-0 right-0 p-1 text-red-500 font-bold rounded-full">
+              &#x25cf;Live
             </div>}
             {/* Display match details */}
             <h2 className="text-2xl font-bold mb-2">{match.sportName}</h2>

@@ -39,6 +39,7 @@ const TeamAndSportList: React.FC = () => {
   const [selectedSport, setSelectedSport] = useState<string | null>(null);
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const location = useLocation();
 
@@ -48,8 +49,10 @@ const TeamAndSportList: React.FC = () => {
         const response = await fetch(`${API_ENDPOINT}/sports`);
         const data = await response.json();
         setSports(data.sports);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching sports:', error);
+        setLoading(false);
       }
     };
 
@@ -58,8 +61,10 @@ const TeamAndSportList: React.FC = () => {
         const response = await fetch(`${API_ENDPOINT}/teams`);
         const data = await response.json();
         setTeams(data);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching teams:', error);
+        setLoading(false);
       }
     };
 
@@ -73,8 +78,10 @@ const TeamAndSportList: React.FC = () => {
         const response = await fetch(`${API_ENDPOINT}/articles`);
         const data = await response.json();
         setArticles(data);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching articles:', error);
+        setLoading(false);
       }
     };
 
@@ -117,7 +124,7 @@ const TeamAndSportList: React.FC = () => {
     <div>
       {location.pathname === '/teams' && <Navbar />}
       <div className="mb-4">
-        <h1 className="bg-green-500 text-red-800 text-2xl font-bold flex justify-center p-2 rounded-lg m-2">
+        <h1 className="bg-gray-800 text-white text-2xl font-bold flex justify-center p-2 rounded-lg m-2">
           Select your Favorite Team
         </h1>
         <select
@@ -137,7 +144,7 @@ const TeamAndSportList: React.FC = () => {
       </div>
 
       <div>
-        <h1 className="bg-green-500 text-red-800 text-xl font-bold p-2 text-center rounded-lg mb-4">
+        <h1 className="bg-gray-800 text-white text-xl font-bold p-2 text-center rounded-lg mb-4">
           Team List
         </h1>
         <select
@@ -159,10 +166,11 @@ const TeamAndSportList: React.FC = () => {
       </div>
 
       <div>
-        <h1 className="bg-green-500 text-red-800 text-xl font-bold p-1 text-center rounded-lg mb-4 mt-2">
+        <h1 className="bg-gray-800 text-white text-xl font-bold p-1 text-center rounded-lg mb-4 mt-2">
           Articles of your favourite team
         </h1>
         <div>
+          {loading && <p>Loading...</p>}
           {desiredTeamWiseArticles.map((article) => (
             <div key={article.id} className="p-2 border border-gray-300 rounded mb-2">
               <h2 className="text-lg font-semibold">{article.title}</h2>

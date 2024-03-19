@@ -20,10 +20,10 @@ const PreferencesModal: React.FC = () => {
   const [sportsList, setSportsList] = useState<Sport[]>([]);
   const [teamsList, setTeamsList] = useState<Team[]>([]);
   const [modalOpen, setModalOpen] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const authToken = localStorage.getItem("authToken");
 
   const userPreferences = useUserPreferences(authToken);
-
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = event.target;
@@ -79,8 +79,10 @@ const PreferencesModal: React.FC = () => {
       );
 
       setModalOpen(false);
+      setLoading(false);
     } catch (error) {
       console.error('Error updating preferences:', error);
+      setLoading(false);
     }
   };
 
@@ -107,13 +109,19 @@ const PreferencesModal: React.FC = () => {
         if (!sportsResponse.ok || !teamsResponse.ok) {
           throw new Error('Failed to fetch data');
         }
+  
+        // Set loading to false after fetching data
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
+        // Set loading to false in case of error
+        setLoading(false);
       }
     };
   
     fetchPreferences();
   }, [userPreferences]);
+  
   
   const handleCloseModal = () => {
     setModalOpen(false);
@@ -128,6 +136,7 @@ const PreferencesModal: React.FC = () => {
               <h2 className="text-xl font-bold mb-4">Select Favorites</h2>
               <div className="mb-4 grid grid-cols-3 gap-4">
                 <h3 className="font-bold mb-2 col-span-3">Sports</h3>
+                {loading && <p>Loading...</p>}
                 {sportsList.slice(0, 12).map((sport) => (
                   <label key={sport.id} className="block">
                     <input
@@ -144,6 +153,7 @@ const PreferencesModal: React.FC = () => {
               </div>
               <div className="grid grid-cols-3 gap-3">
                 <h3 className="font-bold mb-2 col-span-3">Teams</h3>
+                {loading && <p>Loading...</p>}
                 {teamsList.slice(0, 12).map((team) => (
                   <label key={team.id} className="block">
                     <input
