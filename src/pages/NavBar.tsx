@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import PreferencesModal from './Preferences/PreferencesModal';
 import useAuthentication from '../hooks/useAuthentication'; 
+import useUserPreferences from './Preferences/useUserPreferences';
 
 const Navbar: React.FC = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [isPreferencesModalOpen, setPreferencesModalOpen] = useState(false);
-  const isLoggedIn = useAuthentication(); // Use the custom hook to get authentication status
-
+  const isLoggedIn = useAuthentication();
+  const authToken = localStorage.getItem("authToken");
+  const [preferencesStored, setPreferencesStored] = useState<any>(useUserPreferences(authToken));
+  
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
   };
@@ -15,6 +18,13 @@ const Navbar: React.FC = () => {
   const togglePreferencesModal = () => {
     setPreferencesModalOpen(!isPreferencesModalOpen);
   };
+
+  // const handlePreferencesSaved = () => {
+  //   // Logic to handle preferences saved event, e.g., refresh data, etc.
+  //   console.log('Preferences saved');
+  //   // Trigger useEffect by updating preferencesStored state
+  //   setPreferencesStored(useUserPreferences(authToken));
+  // };
 
   return (
     <nav className="bg-gray-800 px-2 py-2">
@@ -46,13 +56,14 @@ const Navbar: React.FC = () => {
                   isDropdownOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
                 }`}
               >
-                <div className="py-1">
+                <div className="py-1 font-semibold">
                   <Link
                     to="/user"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     My Profile
                   </Link>
+                  <hr/>
                   <Link
                     to="/logout"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none"

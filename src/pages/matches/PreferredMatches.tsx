@@ -45,7 +45,7 @@ const PreferredMatches: React.FC<Props> = ({ selectedSports }) => {
   return (
     <>
       <h1 className='text-xl font-bold p-2 rounded-lg m-2 display-block'>Your Picked</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
         {loading && <p>Loading...</p>}
         {preferredMatches.map((match) => (
           <div key={match.id} className="relative bg-white rounded p-3 shadow-md">
@@ -53,15 +53,15 @@ const PreferredMatches: React.FC<Props> = ({ selectedSports }) => {
               &#x25cf;Live
             </div>}
             {/* Display match details */}
-            <h2 className="text-2xl font-bold mb-2">{match.sportName}</h2>
-            <h2 className="text-xl font-semibold mb-2">{match.name}</h2>
-            <p className="text-gray-700 mb-2">Location: {match.location}</p>
+            <h2 className="text-xl font-bold mb-1">{match.sportName}</h2>
+            <h2 className="text-lg font-semibold mb-1">{match.name}</h2>
+            <p className="text-gray-700 mb-1">Location: {match.location}</p>
             <p className="text-gray-700">Ends at: {new Date(match.endsAt).toLocaleString()}</p>
             <div className="flex justify-between items-center mt-2">
               <p className="text-gray-600">Teams:</p>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1">
                 {match.teams.map((team) => (
-                  <span key={team.id} className="bg-gray-200 px-2 py-1 rounded">{team.name}</span>
+                  <span key={team.id} className="bg-gray-200 px-1 rounded">{team.name}</span>
                   ))}
               </div>
             </div>

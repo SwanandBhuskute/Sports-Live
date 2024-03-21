@@ -69,8 +69,8 @@ const LiveMatches: React.FC = () => {
   const selectedSports = isLoggedIn ? userData.preferences?.selectedSports || [] : [];
 
   return (
-    <div className="bg-orange-200 rounded-lg p-4 m-2 shadow-md">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="bg-orange-200 rounded-lg p-2 m-2 shadow-md">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
         {loading && <p>Loading...</p>}
         {liveMatchesWithScores.map((match: Match) => (
           <div key={match.id} className="relative bg-white rounded p-4 shadow-md">
@@ -79,12 +79,12 @@ const LiveMatches: React.FC = () => {
               &#x25cf;Live <p className="ml-1 cursor-pointer" onClick={() => handleSyncScores(match.id)}>&#x27f3;</p>
             </div>
             {/* Display match details */}
-            <h2 className="text-2xl font-bold mb-2">{match.sportName}</h2>
-            <h2 className="text-xl font-semibold mb-2">{match.name}</h2>
+            <h2 className="text-xl font-bold mb-1">{match.sportName}</h2>
+            <h2 className="text-lg font-semibold mb-1">{match.name}</h2>
             <p className="text-gray-700">Location: {match.location}</p>
             {/* Display scores if available */}
             {match.score && (
-              <div className="text-lg mt-2">
+              <div className="mt-2">
                 <p className="font-semibold">Scores:</p>
                 <div className="flex space-x-4">
                   {Object.entries(match.score).map(([teamName, score]) => (

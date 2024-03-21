@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { API_ENDPOINT } from '../../config/constants';
+// import { usePreferencesDispatch } from "../../context/Preferences/context";
+// import { fetchPreferencesList } from "../../context/Preferences/actions";
 
 interface UserPreferences {
   selectedSports: string[];
@@ -8,6 +10,7 @@ interface UserPreferences {
 
 const useUserPreferences = (authToken: string | null): UserPreferences | null => {
   const [userPreferences, setUserPreferences] = useState<UserPreferences | null>(null);
+  // const preferencesDispatch = usePreferencesDispatch();
 
   useEffect(() => {
     const fetchUserPreferences = async () => {
@@ -26,12 +29,15 @@ const useUserPreferences = (authToken: string | null): UserPreferences | null =>
 
         const data = await response.json();
         setUserPreferences(data.preferences);
+
+        // fetchPreferencesList(preferencesDispatch);
       } catch (error) {
         console.error('Error fetching user preferences:', error);
       }
     };
 
     fetchUserPreferences();
+  // }, [authToken, preferencesDispatch]);
   }, [authToken]);
 
   return userPreferences;

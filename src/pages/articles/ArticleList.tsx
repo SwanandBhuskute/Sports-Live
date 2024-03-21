@@ -4,7 +4,7 @@ import Navbar from '../NavBar';
 import { useLocation } from 'react-router-dom';
 import TeamAndSportList from '../teamAndSports/TeamandSportList';
 import PreferredArticles from './PreferredArticles';
-import useAuthentication from '../../hooks/useAuthentication'; 
+import useAuthentication from '../../hooks/useAuthentication';
 
 interface Article {
   id: number;
@@ -31,6 +31,7 @@ const ArticleList: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true); // Loading state
   const isLoggedIn = useAuthentication(); // Use the custom hook to get authentication status
 
+
   useEffect(() => {
     const fetchArticles = async () => {
       try {
@@ -46,7 +47,6 @@ const ArticleList: React.FC = () => {
 
     fetchArticles();
   }, []);
-
 
   
   const handleSportClick = (sport: string) => {
@@ -88,7 +88,7 @@ const ArticleList: React.FC = () => {
         <h1 className='bg-gray-800 text-white text-2xl font-bold flex justify-center p-2 rounded-lg m-2'>Trending News</h1>
         <div className="bg-yellow-200 rounded-lg p-4 m-2 shadow-md">
           <div className="flex flex-wrap gap-4 mb-4 flex justify-center">
-            {loading && <p>Loading...</p>}
+            {/* {loading && <p>Loading...</p>} */}
             {/* Create buttons for each sport */}
             {Array.from(new Set(articles.map((article) => article.sport.name))).map((sport) => (
               <button
@@ -99,7 +99,8 @@ const ArticleList: React.FC = () => {
                 {sport}
               </button>
             ))}
-            {isLoggedIn && (
+            {loading && <p>Loading...</p>}
+            {isLoggedIn && !loading && (
               <>
                 <button
                   onClick={() => setSelectedSport(null)}

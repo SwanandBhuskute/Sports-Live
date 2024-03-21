@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { API_ENDPOINT } from '../../config/constants';
 import useUserPreferences from './useUserPreferences';
+// import { usePreferencesDispatch } from "../../context/Preferences/context";
+// import { fetchPreferencesList } from "../../context/Preferences/actions";
+
+interface Props {
+  selectedSports: string[];
+  selectedTeams: string[];
+}
 
 interface Sport {
   id: number;
@@ -21,7 +28,9 @@ const PreferencesModal: React.FC = () => {
   const [teamsList, setTeamsList] = useState<Team[]>([]);
   const [modalOpen, setModalOpen] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(true);
+  // const preferencesDispatch = usePreferencesDispatch();
   const authToken = localStorage.getItem("authToken");
+  const [preferencesStored, setPreferencesStored] = useState<Props[]>([]);
 
   const userPreferences = useUserPreferences(authToken);
 
@@ -63,10 +72,11 @@ const PreferencesModal: React.FC = () => {
       if (!response.ok) {
         throw new Error('Failed to update preferences');
       }
-      // Refetch matches and live matches after successful update
       
+      // fetchPreferencesList(preferencesDispatch);
+
       // Save selected preferences in localStorage
-      const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+      let userData = JSON.parse(localStorage.getItem('userData') || '{}');
       localStorage.setItem(
         'userData',
         JSON.stringify({
@@ -76,8 +86,10 @@ const PreferencesModal: React.FC = () => {
             selectedTeams,
           },
         })
-      );
-
+        );
+      
+      // dispatch({ type: 'UPDATE_PREFERENCES', payload: { selectedSports, selectedTeams } });
+      userData = JSON.parse(localStorage.getItem('userData') || '{}');
       setModalOpen(false);
       setLoading(false);
     } catch (error) {
@@ -93,7 +105,7 @@ const PreferencesModal: React.FC = () => {
       setSelectedSports(userPreferences.selectedSports || []);
       setSelectedTeams(userPreferences.selectedTeams || []);
     }
-  }, [userPreferences]);
+  }, [userPreferences, preferencesStored]);
 
   useEffect(() => {
     const fetchPreferences = async () => {
@@ -120,7 +132,7 @@ const PreferencesModal: React.FC = () => {
     };
   
     fetchPreferences();
-  }, [userPreferences]);
+  }, [userPreferences, preferencesStored]);
   
   
   const handleCloseModal = () => {

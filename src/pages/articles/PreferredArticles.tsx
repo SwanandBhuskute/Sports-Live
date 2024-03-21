@@ -29,24 +29,28 @@ interface Article {
 }
 
 const PreferredArticles: React.FC<Props> = ({ selectedSports, selectedTeams }) => {
-  const [articles, setArticles] = useState<Article[]>([]);
+  const [articless, setArticless] = useState<Article[]>([]);
   const [selectedArticleReadMore, setSelectedArticleReadMore] = useState<Article | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  
 
   useEffect(() => {
     const fetchArticles = async () => {
       try {
         const response = await fetch(`${API_ENDPOINT}/articles`);
         const data = await response.json();
-        setArticles(data);
+        setArticless(data);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching articles:', error);
+        setLoading(false);
       }
     };
 
     fetchArticles();
   }, []);
 
-  const preferredArticles = articles.filter(article => {
+  const preferredArticles = articless.filter(article => {
     return (
       selectedSports.includes(article.sport.name) ||
       article.teams.some(team => selectedTeams.includes(team.name))
@@ -72,6 +76,7 @@ const PreferredArticles: React.FC<Props> = ({ selectedSports, selectedTeams }) =
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {loading && <p>Loading...</p>}
         {preferredArticles.map((article) => (
           <div key={article.id} className='bg-white rounded p-4 shadow-md'>
             <img src={article.thumbnail} alt={article.title} className='mb-4 rounded-lg w-full h-40 object-cover' />
