@@ -21,7 +21,7 @@ const SignupForm: React.FC = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'Sign-up failed');
+        throw new Error(errorData.message || 'Sign-up failed. Enter proper credentials.');
       }
 
       const data = await response.json();
@@ -31,6 +31,7 @@ const SignupForm: React.FC = () => {
       navigate('/home');
 
     } catch (error) {
+      //@ts-ignore
       setError(error.message);
       console.error('Sign-up failed:', error);
     }

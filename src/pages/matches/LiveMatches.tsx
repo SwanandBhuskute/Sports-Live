@@ -1,23 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { API_ENDPOINT } from "../../config/constants";
 import PreferredMatches from "./PreferredMatches";
-import useAuthentication from '../../hooks/useAuthentication'; 
-
-interface Team {
-  id: number;
-  name: string;
-}
-
-interface Match {
-  id: number;
-  name: string;
-  location: string;
-  endsAt: Date;
-  sportName: string;
-  isRunning: boolean;
-  teams: Team[];
-  score: { [teamName: string]: string };
-}
+import useAuthentication from '../../hooks/useAuthentication';
+import { Match } from '../../context/Matches/types'
 
 const LiveMatches: React.FC = () => {
   const [liveMatchesWithScores, setLiveMatchesWithScores] = useState<Match[]>([]);
@@ -69,11 +54,11 @@ const LiveMatches: React.FC = () => {
   const selectedSports = isLoggedIn ? userData.preferences?.selectedSports || [] : [];
 
   return (
-    <div className="bg-orange-200 rounded-lg p-2 m-2 shadow-md">
+    <div className="bg-yellow-300 rounded-lg p-2 m-2 shadow-md">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
         {loading && <p>Loading...</p>}
         {liveMatchesWithScores.map((match: Match) => (
-          <div key={match.id} className="relative bg-white rounded p-4 shadow-md">
+          <div key={match.id} className="relative bg-white rounded p-4 shadow-md border border-black">
             {/* Display "Live" text at the top right corner */}
             <div className="flex absolute top-0 right-0 p-1 text-red-500 font-bold rounded-full">
               &#x25cf;Live <p className="ml-1 cursor-pointer" onClick={() => handleSyncScores(match.id)}>&#x27f3;</p>

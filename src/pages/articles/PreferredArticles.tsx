@@ -1,38 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { API_ENDPOINT } from '../../config/constants';
+import { Article } from '../../context/Articles/types';
 
-interface Props {
-  selectedSports: string[];
-  selectedTeams: string[];
-}
 
-interface Team {
-  id: number;
-  name: string;
-}
-
-interface Article {
-  id: number;
-  title: string;
-  summary: string;
-  thumbnail: string;
-  sport: {
-    id: number;
-    name: string;
-  };
-  date: string;
-  content: string;
-  teams: {
-    id: number;
-    name: string;
-  }[];
-}
-
-const PreferredArticles: React.FC<Props> = ({ selectedSports, selectedTeams }) => {
+const PreferredArticles: React.FC = () => {
   const [articless, setArticless] = useState<Article[]>([]);
   const [selectedArticleReadMore, setSelectedArticleReadMore] = useState<Article | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  
+  const [preferredArticles, setPreferredArticles] = useState<Article[]>([]);
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -50,12 +25,30 @@ const PreferredArticles: React.FC<Props> = ({ selectedSports, selectedTeams }) =
     fetchArticles();
   }, []);
 
-  const preferredArticles = articless.filter(article => {
-    return (
-      selectedSports.includes(article.sport.name) ||
-      article.teams.some(team => selectedTeams.includes(team.name))
-    );
-  });
+  const retrievePreferences = () => {
+    const userDataString = localStorage.getItem('userData');
+    const userData = userDataString ? JSON.parse(userDataString) : null;
+
+    const latestSelectedSports = userData ? userData.preferences.selectedSports : [];
+    const latestSelectedTeams = userData ? userData.preferences.selectedTeams : [];
+
+    const filteredArticles = articless.filter(article => {
+      return (
+        latestSelectedSports.includes(article.sport.name) ||
+        article.teams.some(team => latestSelectedTeams.includes(team.name))
+      );
+    });
+
+    setPreferredArticles(filteredArticles);
+  };
+
+  useEffect(() => {
+    retrievePreferences();
+  }, [articless]);
+
+  const handleRefresh = () => {
+    retrievePreferences();
+  };
 
   const handleReadMore = async (article: Article) => {
     try {
@@ -75,8 +68,13 @@ const PreferredArticles: React.FC<Props> = ({ selectedSports, selectedTeams }) =
 
   return (
     <>
+      <button 
+        className='text-xl flex items-center font-semibold rounded-lg'
+        onClick={handleRefresh}>
+        &#x27f3;
+      </button>
+      {loading && <p>Loading...</p>}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {loading && <p>Loading...</p>}
         {preferredArticles.map((article) => (
           <div key={article.id} className='bg-white rounded p-4 shadow-md'>
             <img src={article.thumbnail} alt={article.title} className='mb-4 rounded-lg w-full h-40 object-cover' />

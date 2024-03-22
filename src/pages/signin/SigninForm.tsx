@@ -33,6 +33,7 @@ const SigninForm: React.FC = () => {
       navigate('/home');
 
     } catch (error) {
+      //@ts-ignore
       setError(error.message);
       console.error('Sign-in failed:', error);
     }

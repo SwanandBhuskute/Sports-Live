@@ -1,12 +1,11 @@
-import React from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import ArticleList from "../pages/articles/ArticleList";
+import Articles from "../pages/articles/index";
 import Signin from "../pages/signin/index";
 import Signup from "../pages/signup/index";
 import Logout from "../pages/logout";
 import Home from "../pages/Home";
-import MatchList from "../pages/matches/MatchList";
-import TeamAndSportList from "../pages/teamAndSports/TeamandSportList";
+import Matches from "../pages/matches/index";
+import TeamandSport from "../pages/teamAndSports/index";
 import NotFound from "../pages/NotFound";
 import UserDetails from "../pages/UserDetails";
 
@@ -28,9 +27,9 @@ const router = createBrowserRouter([
   { path: "/logout", element: <Logout /> },
   { path: "/user", element: <UserDetails />},
   { path: "/home", element: <Home /> },
-  { path: '/articles', element: <ArticleList /> },
-  { path: '/matches', element: <MatchList /> },
-  { path: '/teams', element: <TeamAndSportList /> },
+  { path: '/articles', element: <Articles /> },
+  { path: '/matches', element: <Matches /> },
+  { path: '/teams', element: <TeamandSport /> },
   { path: "*", element: <NotFound /> },
 ]);
 

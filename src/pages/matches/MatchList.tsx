@@ -3,24 +3,7 @@ import { API_ENDPOINT } from '../../config/constants';
 import Navbar from '../NavBar';
 import { useLocation } from 'react-router-dom';
 import LiveMatches from './LiveMatches';
-
-interface Team {
-  id: number;
-  name: string;
-}
-
-interface Match {
-  startsAt: string | number | Date;
-  score(score: any): unknown;
-  story: string;
-  id: number;
-  name: string;
-  location: string;
-  endsAt: Date;
-  sportName: string;
-  isRunning: boolean;
-  teams: Team[];
-}
+import { Match } from '../../context/Matches/types'
 
 const MatchList: React.FC = () => {
   const [matches, setMatches] = useState<Match[]>([]);
@@ -129,13 +112,6 @@ const MatchList: React.FC = () => {
             <p className="text-lg"><b>Starts At: </b> {new Date(selectedMatch.startsAt).toLocaleString()}</p>
             <p className="text-lg"><b>Ends At: </b>{new Date(selectedMatch.endsAt).toLocaleString()}</p>
             <p className="text-lg"><b>Sport:</b> {selectedMatch.sportName}</p>
-            {/* <p className="text-lg"><b>Score:</b></p> */}
-            {/* <p className="text-lg"><b>Teams:</b></p>
-            <ul>
-              {selectedMatch.teams.map((team) => (
-                <li key={team.id} className="text-sm">{team.name}</li>
-              ))}
-            </ul> */}
             <p className="text-lg"><b>Story:</b></p>
             <p className="">{selectedMatch.story}</p>
             <button

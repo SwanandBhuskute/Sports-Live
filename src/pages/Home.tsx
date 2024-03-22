@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import ArticleList from '../pages/articles/ArticleList';
+import Articles from '../pages/articles/index';
 import Navbar from './NavBar';
 import LiveMatches from './matches/LiveMatches';
 
@@ -25,7 +25,7 @@ const Home: React.FC = () => {
         <LiveMatches/>
       </div>
       <div>
-        <ArticleList />
+        <Articles />
       </div>
     </div>
   );

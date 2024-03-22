@@ -1,25 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { API_ENDPOINT } from '../../config/constants';
 import useUserPreferences from './useUserPreferences';
-// import { usePreferencesDispatch } from "../../context/Preferences/context";
-// import { fetchPreferencesList } from "../../context/Preferences/actions";
+import { Team, Sport } from '../../context/Preferences/types'
 
-interface Props {
-  selectedSports: string[];
-  selectedTeams: string[];
-}
-
-interface Sport {
-  id: number;
-  name: string;
-}
-
-interface Team {
-  id: number;
-  name: string;
-  country: string;
-  plays: string;
-}
+// interface Props {
+//   selectedSports: string[];
+//   selectedTeams: string[];
+// }
 
 const PreferencesModal: React.FC = () => {
   const [selectedSports, setSelectedSports] = useState<string[]>([]);
@@ -28,9 +15,7 @@ const PreferencesModal: React.FC = () => {
   const [teamsList, setTeamsList] = useState<Team[]>([]);
   const [modalOpen, setModalOpen] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(true);
-  // const preferencesDispatch = usePreferencesDispatch();
   const authToken = localStorage.getItem("authToken");
-  const [preferencesStored, setPreferencesStored] = useState<Props[]>([]);
 
   const userPreferences = useUserPreferences(authToken);
 
@@ -73,7 +58,6 @@ const PreferencesModal: React.FC = () => {
         throw new Error('Failed to update preferences');
       }
       
-      // fetchPreferencesList(preferencesDispatch);
 
       // Save selected preferences in localStorage
       let userData = JSON.parse(localStorage.getItem('userData') || '{}');
@@ -105,7 +89,7 @@ const PreferencesModal: React.FC = () => {
       setSelectedSports(userPreferences.selectedSports || []);
       setSelectedTeams(userPreferences.selectedTeams || []);
     }
-  }, [userPreferences, preferencesStored]);
+  }, [userPreferences]);
 
   useEffect(() => {
     const fetchPreferences = async () => {
@@ -132,7 +116,7 @@ const PreferencesModal: React.FC = () => {
     };
   
     fetchPreferences();
-  }, [userPreferences, preferencesStored]);
+  }, [userPreferences]);
   
   
   const handleCloseModal = () => {
@@ -143,11 +127,12 @@ const PreferencesModal: React.FC = () => {
     <>
       {modalOpen && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white rounded-lg overflow-hidden shadow-xl w-112 max-h-full overflow-y-auto">
+          <div className="bg-gray-200 text-lg rounded-lg overflow-hidden shadow-xl w-112 max-h-full overflow-y-auto">
             <div className="p-6">
-              <h2 className="text-xl font-bold mb-4">Select Favorites</h2>
-              <div className="mb-4 grid grid-cols-3 gap-4">
-                <h3 className="font-bold mb-2 col-span-3">Sports</h3>
+              <h2 className="text-2xl font-bold mb-4">Select Favourites</h2>
+              <hr className='border border-black m-1'/>
+              <div className="mb-3 grid grid-cols-3 gap-4">
+                <h3 className="font-bold mb-2 col-span-3 underline">Sports</h3>
                 {loading && <p>Loading...</p>}
                 {sportsList.slice(0, 12).map((sport) => (
                   <label key={sport.id} className="block">
@@ -164,7 +149,7 @@ const PreferencesModal: React.FC = () => {
                 ))}
               </div>
               <div className="grid grid-cols-3 gap-3">
-                <h3 className="font-bold mb-2 col-span-3">Teams</h3>
+                <h3 className="font-bold mb-2 col-span-3 underline">Teams</h3>
                 {loading && <p>Loading...</p>}
                 {teamsList.slice(0, 12).map((team) => (
                   <label key={team.id} className="block">
@@ -184,13 +169,13 @@ const PreferencesModal: React.FC = () => {
             <div className="flex justify-end px-6 pb-6">
               <button
                 onClick={handleSubmit}
-                className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2 hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300"
+                className="bg-blue-500 text-white px-4 py-2 font-semibold rounded-md mr-2 hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300"
               >
                 Save Preferences
               </button>
               <button
                 onClick={handleCloseModal}
-                className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400 focus:outline-none focus:ring focus:border-gray-300"
+                className="bg-gray-300 text-gray-800 px-4 py-2 font-semibold rounded-md hover:bg-gray-400 focus:outline-none focus:ring focus:border-gray-300"
               >
                 Close
               </button>

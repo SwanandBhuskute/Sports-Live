@@ -5,23 +5,7 @@ import { useLocation } from 'react-router-dom';
 import TeamAndSportList from '../teamAndSports/TeamandSportList';
 import PreferredArticles from './PreferredArticles';
 import useAuthentication from '../../hooks/useAuthentication';
-
-interface Article {
-  id: number;
-  title: string;
-  summary: string;
-  thumbnail: string;
-  sport: {
-    id: number;
-    name: string;
-  };
-  date: string;
-  content: string;
-  teams: {
-    id: number;
-    name: string;
-  }[];
-}
+import { Article } from '../../context/Articles/types';
 
 const ArticleList: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -29,8 +13,7 @@ const ArticleList: React.FC = () => {
   const [selectedSport, setSelectedSport] = useState<string | null>(null);
   const location = useLocation();
   const [loading, setLoading] = useState<boolean>(true); // Loading state
-  const isLoggedIn = useAuthentication(); // Use the custom hook to get authentication status
-
+  const isLoggedIn = useAuthentication(); 
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -38,10 +21,10 @@ const ArticleList: React.FC = () => {
         const response = await fetch(`${API_ENDPOINT}/articles`);
         const data = await response.json();
         setArticles(data);
-        setLoading(false); // Set loading to false once data is fetched
+        setLoading(false); 
       } catch (error) {
         console.error('Error fetching articles:', error);
-        setLoading(false); // Set loading to false in case of error
+        setLoading(false); 
       }
     };
 
@@ -69,12 +52,6 @@ const ArticleList: React.FC = () => {
     setSelectedArticle(null);
     document.body.style.overflow = 'auto';
   };
-  
-  // Retrieve selected sports from localStorage if user is logged in
-  const storedData = localStorage.getItem('userData');
-  const userData = storedData ? JSON.parse(storedData) : {};
-  const selectedSports = isLoggedIn ? userData.preferences?.selectedSports || [] : [];
-  const selectedTeams = isLoggedIn ? userData.preferences?.selectedTeams || [] : [];
   
   const filteredArticles = selectedSport
   ? articles.filter((article) => article.sport.name === selectedSport)
@@ -108,7 +85,7 @@ const ArticleList: React.FC = () => {
                   >
                   Your choice
                 </button>
-                {!selectedSport && <PreferredArticles selectedSports={selectedSports} selectedTeams={selectedTeams}/>}
+                {!selectedSport && <PreferredArticles />}
               </>
             )}
           </div>

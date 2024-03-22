@@ -2,14 +2,12 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import PreferencesModal from './Preferences/PreferencesModal';
 import useAuthentication from '../hooks/useAuthentication'; 
-import useUserPreferences from './Preferences/useUserPreferences';
 
 const Navbar: React.FC = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [isPreferencesModalOpen, setPreferencesModalOpen] = useState(false);
   const isLoggedIn = useAuthentication();
-  const authToken = localStorage.getItem("authToken");
-  const [preferencesStored, setPreferencesStored] = useState<any>(useUserPreferences(authToken));
+  // const authToken = localStorage.getItem("authToken");
   
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
@@ -19,13 +17,6 @@ const Navbar: React.FC = () => {
     setPreferencesModalOpen(!isPreferencesModalOpen);
   };
 
-  // const handlePreferencesSaved = () => {
-  //   // Logic to handle preferences saved event, e.g., refresh data, etc.
-  //   console.log('Preferences saved');
-  //   // Trigger useEffect by updating preferencesStored state
-  //   setPreferencesStored(useUserPreferences(authToken));
-  // };
-
   return (
     <nav className="bg-gray-800 px-2 py-2">
       <div className="flex justify-between items-center">
@@ -33,12 +24,12 @@ const Navbar: React.FC = () => {
           Sports Live
         </Link>
         <div className="flex space-x-4 text-white text-lg items-center">
-          <button
+          {isLoggedIn && <button
             onClick={togglePreferencesModal}
             className="text-white hover:bg-gray-700 px-3 py-2 rounded-md focus:outline-none group-hover:bg-gray-700"
           >
             Preferences
-          </button>
+          </button>}
           <Link to="/home">Home</Link>
           <Link to="/articles">Articles</Link>
           <Link to="/matches">Matches</Link>

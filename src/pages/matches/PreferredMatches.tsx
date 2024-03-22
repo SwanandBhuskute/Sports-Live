@@ -1,23 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { API_ENDPOINT } from '../../config/constants';
+import { Match } from '../../context/Matches/types'
 
 interface Props {
   selectedSports: string[];
-}
-
-interface Team {
-  id: number;
-  name: string;
-}
-
-interface Match {
-  id: number;
-  name: string;
-  location: string;
-  endsAt: Date;
-  sportName: string;
-  isRunning: boolean;
-  teams: Team[];
 }
 
 const PreferredMatches: React.FC<Props> = ({ selectedSports }) => {
@@ -44,11 +30,13 @@ const PreferredMatches: React.FC<Props> = ({ selectedSports }) => {
   
   return (
     <>
-      <h1 className='text-xl font-bold p-2 rounded-lg m-2 display-block'>Your Picked</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
-        {loading && <p>Loading...</p>}
+      {loading ? (<p>Loading...</p>) : 
+        (<h1 className='text-xl font-bold p-2 rounded-lg m-1 display-block underline'>Your Picked:</h1>)
+      }
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+        {/* {loading && <p>Loading...</p>} */}
         {preferredMatches.map((match) => (
-          <div key={match.id} className="relative bg-white rounded p-3 shadow-md">
+          <div key={match.id} className="relative bg-white rounded p-3 shadow-lg border border-black">
             {match.isRunning && <div className="flex absolute top-0 right-0 p-1 text-red-500 font-bold rounded-full">
               &#x25cf;Live
             </div>}
