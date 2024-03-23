@@ -28,19 +28,26 @@ const PreferredArticles: React.FC = () => {
   const retrievePreferences = () => {
     const userDataString = localStorage.getItem('userData');
     const userData = userDataString ? JSON.parse(userDataString) : null;
-
-    const latestSelectedSports = userData ? userData.preferences.selectedSports : [];
-    const latestSelectedTeams = userData ? userData.preferences.selectedTeams : [];
-
+  
+    // Check if userData.preferences exists, if not, set preferredArticles to all articles
+    if (!userData || !userData.preferences) {
+      setPreferredArticles(articless);
+      return;
+    }
+  
+    const latestSelectedSports = userData.preferences.selectedSports || [];
+    const latestSelectedTeams = userData.preferences.selectedTeams || [];
+  
     const filteredArticles = articless.filter(article => {
       return (
         latestSelectedSports.includes(article.sport.name) ||
         article.teams.some(team => latestSelectedTeams.includes(team.name))
       );
     });
-
+  
     setPreferredArticles(filteredArticles);
   };
+  
 
   useEffect(() => {
     retrievePreferences();

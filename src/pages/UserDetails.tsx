@@ -35,7 +35,7 @@ const UserDetails: React.FC = () => {
             <p>Loading...</p>
           ) : (
             <>
-              {userPreferences && (
+              {userPreferences && userPreferences.selectedTeams && userPreferences.selectedSports ? (
                 <>
                   {userPreferences.selectedTeams.length > 0 || userPreferences.selectedSports.length > 0 ? (
                     <>
@@ -46,6 +46,8 @@ const UserDetails: React.FC = () => {
                     <p>No Preferences selected</p>
                   )}
                 </>
+              ) : (
+                <p>No Preferences selected</p>
               )}
             </>
           )}
