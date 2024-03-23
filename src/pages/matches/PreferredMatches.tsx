@@ -34,7 +34,7 @@ const PreferredMatches: React.FC<Props> = ({ selectedSports }) => {
   return (
     <>
       {loading && <p>Loading...</p>}
-      {preferredMatches && userData.preferences &&
+      {preferredMatches && userData.preferences && preferredMatches.length > 0 &&
         <>
           <h1 className='text-xl font-bold p-2 rounded-lg m-1 display-block underline'>Your Picked:</h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
