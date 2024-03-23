@@ -2,35 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { API_ENDPOINT } from '../../config/constants';
 import Navbar from '../NavBar';
 import { useLocation } from 'react-router-dom';
+import { Team, Sport, Article } from '../../context/TeamandSport/types'
 
-interface Sport {
-  id: number;
-  name: string;
-}
-
-interface Team {
-  id: number;
-  name: string;
-  country: string;
-  plays: string;
-}
-
-interface Article {
-  id: number;
-  title: string;
-  summary: string;
-  thumbnail: string;
-  sport: {
-    id: number;
-    name: string;
-  };
-  date: string;
-  content: string;
-  teams: {
-    id: number;
-    name: string;
-  }[];
-}
 
 const TeamAndSportList: React.FC = () => {
   const [sports, setSports] = useState<Sport[]>([]);
@@ -88,13 +61,30 @@ const TeamAndSportList: React.FC = () => {
     fetchArticles();
   }, []);
 
+  useEffect(() => {
+    // Select the first sport by default
+    if (sports.length > 0) {
+      setSelectedSport(sports[0].name);
+    }
+  }, [sports]);
+
+  useEffect(() => {
+    // Select the first team of the selected sport by default
+    if (selectedSport && teams.length > 0) {
+      const teamsOfSelectedSport = teams.filter(team => team.plays === selectedSport);
+      if (teamsOfSelectedSport.length > 0) {
+        setSelectedTeam(teamsOfSelectedSport[0].name);
+      }
+    }
+  }, [selectedSport, teams]);
+
   const handleSportChange = (sportName: string) => {
     setSelectedSport(sportName);
-    setSelectedTeam(null); // Reset selected team when sport changes
+    setSelectedTeam(null);
   };
 
-  const handleTeamChange = (teamId: string) => {
-    setSelectedTeam(teamId);
+  const handleTeamChange = (teamName: string) => {
+    setSelectedTeam(teamName);
   };
 
   const desiredTeamWiseArticles = articles.filter((article) => {
@@ -124,49 +114,46 @@ const TeamAndSportList: React.FC = () => {
     <div>
       {location.pathname === '/teams' && <Navbar />}
       <div className="mb-4">
-        <h1 className="bg-gray-800 text-white text-2xl font-bold flex justify-center p-2 rounded-lg m-2">
+        <h1 className="bg-gray-800 text-white text-2xl font-bold flex justify-center p-2 rounded-lg m-1">
           Select your Favorite Team
         </h1>
-        <select
-          value={selectedSport || ''}
+        <div className="mb-4 flex justify-center">
+          <select
+            value={selectedSport || ''}
             onChange={(e) => handleSportChange(e.target.value)}
-          className="p-2 border border-gray-300 rounded w-full"
-        >
-          <option value='' disabled>
-            Select Sport
-          </option>
-          {sports.map((sport) => (
-            <option key={sport.id} value={sport.name}>
-              {sport.name}
+            className="p-2 border border-gray-300 rounded w-1/3 m-1"
+          >
+            <option value='' disabled>
+              Select Sport
             </option>
-          ))}
-        </select>
-      </div>
-
-      <div>
-        <h1 className="bg-gray-800 text-white text-xl font-bold p-2 text-center rounded-lg mb-4">
-          Team List
-        </h1>
-        <select
-          value={selectedTeam || ''}
-          onChange={(e) => handleTeamChange(e.target.value)}
-          className="p-2 border border-gray-300 rounded w-full"
-        >
-          <option value="" disabled>
-            Select Team
-          </option>
-          {teams
-            .filter((team) => team.plays === selectedSport)
-            .map((filteredTeam) => (
-              <option key={filteredTeam.id} value={filteredTeam.name}>
-                {filteredTeam.name}
+            {sports.map((sport) => (
+              <option key={sport.id} value={sport.name}>
+                {sport.name}
               </option>
             ))}
-        </select>
+          </select>
+
+          <select
+            value={selectedTeam || ''}
+            onChange={(e) => handleTeamChange(e.target.value)}
+            className="p-2 border border-gray-300 rounded w-1/3 m-1"
+          >
+            <option value="" disabled>
+              Select Team
+            </option>
+            {teams
+              .filter((team) => team.plays === selectedSport)
+              .map((filteredTeam) => (
+                <option key={filteredTeam.id} value={filteredTeam.name}>
+                  {filteredTeam.name}
+                </option>
+              ))}
+          </select>
+        </div>
       </div>
 
       <div>
-        <h1 className="bg-gray-800 text-white text-xl font-bold p-1 text-center rounded-lg mb-4 mt-2">
+        <h1 className="bg-gray-800 text-white text-xl font-semibold p-1 text-center rounded-lg m-1 mb-4 mt-2">
           Articles of your favourite team
         </h1>
         <div>
