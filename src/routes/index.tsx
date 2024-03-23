@@ -1,6 +1,7 @@
-// @ts-ignore
+//@ts-ignore
 import React, { lazy, Suspense } from 'react';
 import { createBrowserRouter, Navigate } from "react-router-dom";
+import ProtectedRoute from './ProtectedRoute';
 
 const Signin = React.lazy(() => import("../pages/signin/index"));
 const Signup = React.lazy(() => import("../pages/signup/index"));
@@ -38,7 +39,14 @@ const router = createBrowserRouter([
   { path: "/signin", element: <Signin />  },
   { path: "/signup", element: <Signup /> },
   { path: "/logout", element: <Logout /> },
-  { path: "/user", element: <UserDetails />},
+  { 
+    path: "/user", 
+    element: (
+      <ProtectedRoute>
+        <UserDetails />
+      </ProtectedRoute>
+    ),
+  },
   { path: "/home", element: <Home /> },
   { path: '/articles', element: <Articles /> },
   { path: '/matches', element: <Matches /> },

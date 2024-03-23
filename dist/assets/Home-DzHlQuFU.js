@@ -1,0 +1,1 @@
+import{j as r}from"./index-CsaiKf86.js";import s from"./index-CKGBpSsc.js";import{N as i}from"./NavBar-pqgaU9Ms.js";import{L as o}from"./LiveMatches-BTjrXAL8.js";import"./ErrorBoundary-DFU1WLaN.js";import"./constants-C9Jc7q6O.js";const p=()=>r.jsxs("div",{children:[r.jsx(i,{}),r.jsx("div",{children:r.jsx(o,{})}),r.jsx("div",{children:r.jsx(s,{})})]});export{p as default};
