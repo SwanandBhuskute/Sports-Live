@@ -140,7 +140,7 @@ const ArticleList: React.FC = () => {
 
       </div>
       {/* Right Side (Team and Sport Dropdowns) */}
-      {location.pathname === '/home' && (
+      {(location.pathname === '/home'  || location.pathname === '/') && (
         <div className="w-1/3 overflow-y-auto">
           <TeamAndSportList />
         </div>
