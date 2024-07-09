@@ -1,0 +1,1 @@
+import{r as e,j as o}from"./index-BeONN430.js";class a extends e.Component{constructor(r){super(r),this.state={hasError:!1}}static getDerivedStateFromError(r){return{hasError:!0}}componentDidCatch(r,t){console.error("ErrorBoundary caught an error:",r,t)}render(){return this.state.hasError?o.jsx("div",{children:"Something went wrong."}):this.props.children}}export{a as E};
