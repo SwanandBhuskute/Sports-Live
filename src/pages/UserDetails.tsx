@@ -26,9 +26,9 @@ const UserDetails: React.FC = () => {
     <>
       <Navbar />
       <div className="max-w-md mx-auto mt-8 p-6 bg-gray-100 rounded-lg">
-        <h2 className="text-2xl font-bold mb-4">User Details<hr className='m-2'/></h2>
-        <p className="mb-2"><strong>Name:</strong> {userData.name}</p>
-        <p className="mb-2"><strong>Email:</strong> {userData.email}</p>
+        <h2 data-testid="userdetailscypress" className="text-2xl font-bold mb-4">User Details<hr className='m-2'/></h2>
+        <p data-testid="namecypress" className="mb-2"><strong>Name:</strong> {userData.name}</p>
+        <p data-testid="emailcypress" className="mb-2"><strong>Email:</strong> {userData.email}</p>
         <h3 className="text-lg font-bold mb-2">Preferences:</h3>
         <div className="mb-4">
           {loadingPreferences ? ( 
