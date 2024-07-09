@@ -14,9 +14,9 @@ describe('MatchList Component', () => {
   
     it('should filter matches by sport', () => {
       cy.contains('Loading...').should('not.exist');
-      cy.get('button').contains('Cricket').click(); 
+      cy.get('button').contains('Rugby').click(); 
       cy.get('div.bg-white').each((match) => {
-        cy.wrap(match).contains('Cricket');
+        cy.wrap(match).contains('Rugby');
       });
     });
   });
