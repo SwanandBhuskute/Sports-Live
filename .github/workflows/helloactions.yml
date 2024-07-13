@@ -78,7 +78,7 @@ jobs:
           echo "Sending notification to Discord..."
 
           # Prepare message with GitHub Actions workflow link
-          message="{\"content\": \"CI/CD Pipeline $status_msg. Check the [GitHub Actions](${SERVER_URL_GITHUB}/${REPOSITORY_GITHUB}/actions) for more details.\"}"
+          message="{\"content\": \"CI/CD Pipeline $status_msg. Check the [GitHub Actions](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions) for more details.\"}"
 
           # Send message to Discord webhook
           curl -H "Content-Type: application/json" \
