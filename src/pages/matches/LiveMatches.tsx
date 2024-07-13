@@ -54,7 +54,7 @@ const LiveMatches: React.FC = () => {
   const selectedSports = isLoggedIn ? userData.preferences?.selectedSports || [] : [];
 
   return (
-    <div className="bg-yellow-300 rounded-lg p-2 m-2 shadow-md">
+    <div className="bg-red-300 rounded-lg p-2 m-2 shadow-md">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
         {loading && <p>Loading...</p>}
         {liveMatchesWithScores.map((match: Match) => (
