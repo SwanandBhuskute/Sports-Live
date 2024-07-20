@@ -68,7 +68,7 @@ const ArticleList: React.FC = () => {
         <h1 data-testid='cypress-title' className='bg-gray-800 text-white text-2xl font-bold flex justify-center p-2 rounded-lg m-2'>
           {t('Trending News')}
         </h1>
-        <div className="bg-yellow-200 rounded-lg p-4 m-2 shadow-md">
+        <div className="bg-red-200 rounded-lg p-4 m-2 shadow-md">
           <div className="flex flex-wrap gap-4 mb-4 flex justify-center">
             {/* {loading && <p>Loading...</p>} */}
             {/* Create buttons for each sport */}
