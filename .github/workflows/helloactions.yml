@@ -84,12 +84,15 @@ jobs:
       # Notify to Discord on the result of the pipeline (success or failure)
       - name: Notify to Discord
         run: |
-          status=$?
-          if [ $status -eq 0 ]; then
+          build_status=${{ needs.build-and-test.result }}
+          docker_status=${{ needs.build-docker-image.result }}
+          
+          if [ "$build_status" == "success" ] && [ "$docker_status" == "success" ]; then
             status_msg="succeeded"
           else
             status_msg="failed"
           fi
+
           echo "Sending notification to Discord..."
 
           # Prepare message with GitHub Actions workflow link
