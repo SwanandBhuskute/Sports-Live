@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { API_ENDPOINT } from '../../config/constants';
 import { Article } from '../../context/Articles/types';
+import { useTranslation } from 'react-i18next';
+import { formatDateTime } from '../../components/dateUtils';
 
 
 const PreferredArticles: React.FC = () => {
@@ -8,6 +10,7 @@ const PreferredArticles: React.FC = () => {
   const [selectedArticleReadMore, setSelectedArticleReadMore] = useState<Article | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [preferredArticles, setPreferredArticles] = useState<Article[]>([]);
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -90,7 +93,7 @@ const PreferredArticles: React.FC = () => {
               onClick={() => handleReadMore(article)}
               className='bg-blue-500 text-white px-2 py-1 rounded-md text-sm hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300'
             >
-              Read more
+              {t('Read more')}
             </button>
           </div>
         ))}
@@ -98,13 +101,13 @@ const PreferredArticles: React.FC = () => {
       {selectedArticleReadMore && (
         <div className='fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50'>
           <div className='bg-gray-300 rounded p-6 max-w-2xl mx-auto my-8 max-h-full overflow-y-auto'>
-            <img src={selectedArticleReadMore.thumbnail} alt={selectedArticleReadMore.title} className='mb-4 rounded-lg w-full h-40 object-cover' />
             <h2 className='text-2xl font-bold mb-4'>{selectedArticleReadMore.title}</h2>
+            <img src={selectedArticleReadMore.thumbnail} alt={selectedArticleReadMore.title} className='mb-4 rounded-lg w-full h-full object-cover' />
             <p className='mb-4'>{selectedArticleReadMore.content}</p>
-            <p className="font-semibold">Ends at: {new Date(selectedArticleReadMore.date).toLocaleString()}</p>
+            <p className="font-semibold">{t('Ends at')}: {formatDateTime(selectedArticleReadMore.date, i18n.language)}</p>
             {selectedArticleReadMore.teams.length > 0 && (
               <div className="flex justify-between items-center mt-2">
-                <p className="font-semibold">Teams:</p>
+                <p className="font-semibold">{t('Teams')}:</p>
                 <div className="flex flex-wrap gap-1">
                   {selectedArticleReadMore.teams.map((team) => (
                     <span key={team.id} className="bg-gray-200 px-2 py-1 rounded">{team.name}</span>

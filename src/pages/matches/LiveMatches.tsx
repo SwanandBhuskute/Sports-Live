@@ -3,11 +3,13 @@ import { API_ENDPOINT } from "../../config/constants";
 import PreferredMatches from "./PreferredMatches";
 import useAuthentication from '../../hooks/useAuthentication';
 import { Match } from '../../context/Matches/types'
+import { useTranslation } from "react-i18next";
 
 const LiveMatches: React.FC = () => {
   const [liveMatchesWithScores, setLiveMatchesWithScores] = useState<Match[]>([]);
   const isLoggedIn = useAuthentication(); // Use the custom hook to get authentication status
   const [loading, setLoading] = useState<boolean>(true); // Loading state
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchMatches = async () => {
@@ -64,9 +66,9 @@ const LiveMatches: React.FC = () => {
               &#x25cf;Live <p className="ml-1 cursor-pointer" onClick={() => handleSyncScores(match.id)}>&#x27f3;</p>
             </div>
             {/* Display match details */}
-            <h2 className="text-xl font-bold mb-1">{match.sportName}</h2>
+            <h2 className="text-xl font-bold mb-1">{t(`${match.sportName}`)}</h2>
             <h2 className="text-lg font-semibold mb-1">{match.name}</h2>
-            <p className="text-gray-700">Location: {match.location}</p>
+            <p className="text-gray-700">{t('Location')}: {match.location}</p>
             {/* Display scores if available */}
             {match.score && (
               <div className="mt-2">

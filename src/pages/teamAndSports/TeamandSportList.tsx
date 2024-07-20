@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { API_ENDPOINT } from '../../config/constants';
 import Navbar from '../NavBar';
 import { useLocation } from 'react-router-dom';
-import { Team, Sport, Article } from '../../context/TeamandSport/types'
-
+import { Team, Sport, Article } from '../../context/TeamandSport/types';
+import { useTranslation } from 'react-i18next';
+import { formatDateTime } from '../../components/dateUtils';
 
 const TeamAndSportList: React.FC = () => {
   const [sports, setSports] = useState<Sport[]>([]);
@@ -15,6 +16,7 @@ const TeamAndSportList: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   const location = useLocation();
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     const fetchSports = async () => {
@@ -92,7 +94,7 @@ const TeamAndSportList: React.FC = () => {
       article.sport.name === selectedSport &&
       article.teams.some((team) => team.name === selectedTeam)
     );
-  });  
+  });
 
   const handleReadMore = async (article: Article) => {
     try {
@@ -115,7 +117,7 @@ const TeamAndSportList: React.FC = () => {
       {location.pathname === '/teams' && <Navbar />}
       <div className="mb-4">
         <h1 className="bg-gray-800 text-white text-2xl font-bold flex justify-center p-2 rounded-lg m-1">
-          Select your Favorite Team
+          {t('Select your Favorite Team')}
         </h1>
         <div className="mb-4 flex justify-center">
           <select
@@ -124,11 +126,11 @@ const TeamAndSportList: React.FC = () => {
             className="p-2 border border-gray-300 rounded w-1/3 m-1"
           >
             <option value='' disabled>
-              Select Sport
+              {t('Select Sport')}
             </option>
             {sports.map((sport) => (
               <option key={sport.id} value={sport.name}>
-                {sport.name}
+                {t(`${sport.name}`)}
               </option>
             ))}
           </select>
@@ -139,7 +141,7 @@ const TeamAndSportList: React.FC = () => {
             className="p-2 border border-gray-300 rounded w-1/3 m-1"
           >
             <option value="" disabled>
-              Select Team
+              {t('Select Team')}
             </option>
             {teams
               .filter((team) => team.plays === selectedSport)
@@ -154,7 +156,7 @@ const TeamAndSportList: React.FC = () => {
 
       <div>
         <h1 className="bg-gray-800 text-white text-xl font-semibold p-1 text-center rounded-lg m-1 mb-4 mt-2">
-          Articles of your favourite team
+          {t('Articles of your favourite team')}
         </h1>
         <div>
           {loading && <p>Loading...</p>}
@@ -166,7 +168,7 @@ const TeamAndSportList: React.FC = () => {
                 onClick={() => handleReadMore(article)}
                 className='bg-blue-600 text-white px-2 py-1 rounded-md text-sm hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300'
               >
-                Read more
+                {t('Read more')}
               </button>
             </div>
           ))}
@@ -175,34 +177,34 @@ const TeamAndSportList: React.FC = () => {
 
       {/* Modal for selected article */}
       <div className={`fixed top-0 left-0 w-full h-full overflow-y-auto flex items-center justify-center bg-black bg-opacity-50 transition-opacity ${selectedArticle ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-          <div className="bg-gray-300 rounded p-6 max-w-2xl mx-auto my-8 max-h-full overflow-y-auto">
-            {/* Modal content */}
-            {selectedArticle && (
-              <>
-                <img src={selectedArticle.thumbnail} alt={selectedArticle.title} className='mb-4 rounded-lg w-full h-40 object-cover' />
-                <h2 className='text-2xl font-bold mb-4'>{selectedArticle.title}</h2>
-                <p className='mb-4'>{selectedArticle.content}</p>
-                <p className="font-semibold">Ends at: {new Date(selectedArticle.date).toLocaleString()}</p>
-                {selectedArticle.teams.length > 0 && (
-                  <div className="flex justify-between items-center mt-2">
-                    <p className="font-semibold">Teams:</p>
-                    <div className="flex flex-wrap gap-1">
-                      {selectedArticle.teams.map((team) => (
-                        <span key={team.id} className="bg-gray-200 px-2 py-1 rounded">{team.name}</span>
-                      ))}
-                    </div>
+        <div className="bg-gray-300 rounded p-6 max-w-2xl mx-auto my-8 max-h-full overflow-y-auto">
+          {/* Modal content */}
+          {selectedArticle && (
+            <>
+              <h2 className='text-2xl font-bold mb-4'>{selectedArticle.title}</h2>
+              <img src={selectedArticle.thumbnail} alt={selectedArticle.title} className='mb-4 rounded-lg w-full h-full object-cover' />
+              <p className='mb-4'>{selectedArticle.content}</p>
+              <p className="font-semibold">{formatDateTime(selectedArticle.date, i18n.language)}</p>
+              {selectedArticle.teams.length > 0 && (
+                <div className="flex justify-between items-center mt-2">
+                  <p className="font-semibold">{t('Teams')}:</p>
+                  <div className="flex flex-wrap gap-1">
+                    {selectedArticle.teams.map((team) => (
+                      <span key={team.id} className="bg-gray-200 px-2 py-1 rounded">{team.name}</span>
+                    ))}
                   </div>
-                )}
-                <button
-                  onClick={handleCloseModal}
-                  className='bg-red-500 text-white px-4 py-2 mt-3 rounded-md hover:bg-red-700 focus:outline-none focus:ring focus:border-red-300'
-                >
-                  Close
-                </button>
-              </>
-            )}
-          </div>
+                </div>
+              )}
+              <button
+                onClick={handleCloseModal}
+                className='bg-red-500 text-white px-4 py-2 mt-3 rounded-md hover:bg-red-700 focus:outline-none focus:ring focus:border-red-300'
+              >
+                {t('Close')}
+              </button>
+            </>
+          )}
         </div>
+      </div>
     </div>
   );
 };

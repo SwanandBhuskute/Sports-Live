@@ -3,7 +3,9 @@ import { API_ENDPOINT } from '../../config/constants';
 import Navbar from '../NavBar';
 import { useLocation } from 'react-router-dom';
 import LiveMatches from './LiveMatches';
-import { Match } from '../../context/Matches/types'
+import { Match } from '../../context/Matches/types';
+import { useTranslation } from 'react-i18next';
+import { formatDateTime } from '../../components/dateUtils';  // Import the utility function
 
 const MatchList: React.FC = () => {
   const [matches, setMatches] = useState<Match[]>([]);
@@ -11,6 +13,7 @@ const MatchList: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedSport, setSelectedSport] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const { t, i18n } = useTranslation();
 
   const location = useLocation();
 
@@ -59,7 +62,7 @@ const MatchList: React.FC = () => {
   return (
     <div>
       {location.pathname === '/matches' && <Navbar />}
-      <h1 className='bg-gray-800 text-white text-2xl font-bold flex justify-center p-2 rounded-lg m-2'>Match List</h1>
+      <h1 className='bg-gray-800 text-white text-2xl font-bold flex justify-center p-2 rounded-lg m-2'>{t('Match List')}</h1>
       <div className="bg-yellow-200 rounded-lg p-4 m-2 shadow-md">
         {location.pathname === '/matches' && <LiveMatches />}
         <div className="flex flex-wrap gap-4 mb-4 flex justify-center">
@@ -71,7 +74,7 @@ const MatchList: React.FC = () => {
               onClick={() => handleSportClick(sport)}
               className={`px-6 py-3 rounded-md ${selectedSport === sport ? 'bg-blue-600 text-white font-semibold' : 'bg-gray-400 text-gray-800 font-semibold'} hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300`}
             >
-              {sport}
+              {t(`${sport}`)}
             </button>
           ))}
         </div>
@@ -84,14 +87,14 @@ const MatchList: React.FC = () => {
                   &#x25cf;Live
                 </div>
               )}
-              <h2 className="text-2xl font-semibold mb-2">{match.sportName}</h2>
+              <h2 className="text-2xl font-semibold mb-2">{t(`${match.sportName}`)}</h2>
               <h2 className="text-xl font-semibold mb-2">{match.name}</h2>
               <p className="text-gray-600">{match.location}</p>
               <button
                 onClick={() => handleReadMore(match.id)}
                 className="bg-blue-500 text-white px-3 py-1 rounded-md mt-4 hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300"
               >
-                Read More
+                {t('Read more')}
               </button>
             </div>
           ))}
@@ -101,29 +104,28 @@ const MatchList: React.FC = () => {
       {selectedMatch && (
         <div className={`fixed top-0 left-0 w-full h-full overflow-y-auto flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300 ${isModalOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
           <div className="bg-gray-300 rounded p-6 max-w-2xl mx-auto my-8 max-h-full overflow-y-auto">
-            <h2 className="text-2xl font-bold mb-2"><b><u>Match</u> - </b>{selectedMatch.name}</h2>
+            <h2 className="text-2xl font-bold mb-2"><b><u>{t('Match')}</u> - </b>{selectedMatch.name}</h2>
             <hr/>
             <ul className='flex justify-center'>
               {Object.entries(selectedMatch.score).map(([team, score]) => (
                 <li key={team} className="text-lg m-3">&#x25cf; {team} - {score}</li>
               ))}
             </ul>
-            <p className="text-lg"><b>Location: </b> {selectedMatch.location}</p>
-            <p className="text-lg"><b>Starts At: </b> {new Date(selectedMatch.startsAt).toLocaleString()}</p>
-            <p className="text-lg"><b>Ends At: </b>{new Date(selectedMatch.endsAt).toLocaleString()}</p>
-            <p className="text-lg"><b>Sport:</b> {selectedMatch.sportName}</p>
-            <p className="text-lg"><b>Story:</b></p>
+            <p className="text-lg"><b>{t('Location')}: </b> {selectedMatch.location}</p>
+            <p className="text-lg"><b>{t('Starts at')}: </b> {formatDateTime(selectedMatch.startsAt, i18n.language)}</p>
+            <p className="text-lg"><b>{t('Ends at')}: </b> {formatDateTime(selectedMatch.endsAt, i18n.language)}</p>
+            <p className="text-lg"><b>{t('Sport')}:</b> {t(`${selectedMatch.sportName}`)}</p>
+            <p className="text-lg"><b>{t('Story')}:</b></p>
             <p className="">{selectedMatch.story}</p>
             <button
               onClick={handleCloseModal}
               className="bg-red-600 text-white px-4 py-2 rounded-md mt-4 hover:bg-red-700 focus:outline-none focus:ring focus:border-red-300"
             >
-              Close
+              {t('Close')}
             </button>
           </div>
         </div>
       )}
-
     </div>
   );
 };

@@ -6,6 +6,8 @@ import TeamAndSportList from '../teamAndSports/TeamandSportList';
 import PreferredArticles from './PreferredArticles';
 import useAuthentication from '../../hooks/useAuthentication';
 import { Article } from '../../context/Articles/types';
+import { useTranslation } from 'react-i18next';
+import { formatDateTime } from '../../components/dateUtils';
 
 const ArticleList: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -14,6 +16,7 @@ const ArticleList: React.FC = () => {
   const location = useLocation();
   const [loading, setLoading] = useState<boolean>(true); // Loading state
   const isLoggedIn = useAuthentication(); 
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -63,7 +66,7 @@ const ArticleList: React.FC = () => {
       <div className={location.pathname === '/home' ? 'w-2/3 h-full overflow-y-auto' : 'flex-1'}>
         {location.pathname === '/articles' && <Navbar />}
         <h1 data-testid='cypress-title' className='bg-gray-800 text-white text-2xl font-bold flex justify-center p-2 rounded-lg m-2'>
-          Trending News
+          {t('Trending News')}
         </h1>
         <div className="bg-yellow-200 rounded-lg p-4 m-2 shadow-md">
           <div className="flex flex-wrap gap-4 mb-4 flex justify-center">
@@ -75,7 +78,7 @@ const ArticleList: React.FC = () => {
                 onClick={() => handleSportClick(sport)}
                 className={`px-3 py-2 rounded-md ${selectedSport === sport ? 'bg-blue-600 text-white font-semibold' : 'bg-gray-400 text-gray-800 font-semibold'} hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300`}
               >
-                {sport}
+                {t(`${sport}`)}
               </button>
             ))}
             {loading && <p>Loading...</p>}
@@ -85,7 +88,7 @@ const ArticleList: React.FC = () => {
                   onClick={() => setSelectedSport(null)}
                   className={`px-6 py-3 rounded-md ${selectedSport === null ? 'bg-blue-600 text-white font-semibold' : 'bg-gray-400 text-gray-800 font-semibold'} hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300`}
                   >
-                  Your choice
+                  {t('Your choice')}
                 </button>
                 {!selectedSport && <PreferredArticles />}
               </>
@@ -100,7 +103,7 @@ const ArticleList: React.FC = () => {
                   onClick={() => handleReadMore(article)}
                   className='bg-blue-600 text-white px-2 py-1 rounded-md text-sm hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300'
                 >
-                  Read more
+                  {t('Read more')}
                 </button>
               </div>
             ))}
@@ -113,13 +116,13 @@ const ArticleList: React.FC = () => {
             {/* Modal content */}
             {selectedArticle && (
               <>
-                <img src={selectedArticle.thumbnail} alt={selectedArticle.title} className='mb-4 rounded-lg w-full h-40 object-cover' />
                 <h2 className='text-2xl font-bold mb-4'>{selectedArticle.title}</h2>
+                <img src={selectedArticle.thumbnail} alt={selectedArticle.title} className='mb-4 rounded-lg w-full h-full object-cover' />
                 <p className='mb-4'>{selectedArticle.content}</p>
-                <p className="font-semibold">Ends at: {new Date(selectedArticle.date).toLocaleString()}</p>
+                <p className="font-semibold">{t('Ends at')}: {formatDateTime(selectedArticle.date, i18n.language)}</p>
                 {selectedArticle.teams.length > 0 && (
                   <div className="flex justify-between items-center mt-2">
-                    <p className="font-semibold">Teams:</p>
+                    <p className="font-semibold">{t('Teams')}:</p>
                     <div className="flex flex-wrap gap-1">
                       {selectedArticle.teams.map((team) => (
                         <span key={team.id} className="bg-gray-200 px-2 py-1 rounded">{team.name}</span>

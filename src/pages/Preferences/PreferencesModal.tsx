@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { API_ENDPOINT } from '../../config/constants';
 import useUserPreferences from './useUserPreferences';
 import { Team, Sport } from '../../context/Preferences/types'
+import { useTranslation } from 'react-i18next';
 
 // interface Props {
 //   selectedSports: string[];
@@ -18,6 +19,7 @@ const PreferencesModal: React.FC = () => {
   const authToken = localStorage.getItem("authToken");
 
   const userPreferences = useUserPreferences(authToken);
+  const { t } = useTranslation();
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = event.target;
@@ -129,10 +131,10 @@ const PreferencesModal: React.FC = () => {
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-gray-200 text-lg rounded-lg overflow-hidden shadow-xl w-112 max-h-full overflow-y-auto">
             <div className="p-6">
-              <h2 className="text-2xl font-bold mb-4">Select Favourites</h2>
+              <h2 className="text-2xl font-bold mb-4">{t('Select Favourites')}</h2>
               <hr className='border border-black m-1'/>
               <div className="mb-3 grid grid-cols-3 gap-4">
-                <h3 className="font-bold mb-2 col-span-3 underline">Sports</h3>
+                <h3 className="font-bold mb-2 col-span-3 underline">{t('Sports')}</h3>
                 {loading && <p>Loading...</p>}
                 {sportsList.slice(0, 12).map((sport) => (
                   <label key={sport.id} className="block">
@@ -144,12 +146,12 @@ const PreferencesModal: React.FC = () => {
                       onChange={handleCheckboxChange}
                       className="mr-2"
                     />
-                    {sport.name}
+                    {t(`${sport.name}`)}
                   </label>
                 ))}
               </div>
               <div className="grid grid-cols-3 gap-3">
-                <h3 className="font-bold mb-2 col-span-3 underline">Teams</h3>
+                <h3 className="font-bold mb-2 col-span-3 underline">{t('Teams')}</h3>
                 {loading && <p>Loading...</p>}
                 {teamsList.slice(0, 12).map((team) => (
                   <label key={team.id} className="block">
@@ -171,7 +173,7 @@ const PreferencesModal: React.FC = () => {
                 onClick={handleSubmit}
                 className="bg-blue-500 text-white px-4 py-2 font-semibold rounded-md mr-2 hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300"
               >
-                Save Preferences
+                Save {t('Preferences')}
               </button>
               <button
                 onClick={handleCloseModal}

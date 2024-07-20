@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { API_ENDPOINT } from '../../config/constants';
 import { Match } from '../../context/Matches/types'
+import { useTranslation } from 'react-i18next';
+import { formatDateTime } from '../../components/dateUtils';
 
 interface Props {
   selectedSports: string[];
@@ -12,6 +14,7 @@ const PreferredMatches: React.FC<Props> = ({ selectedSports }) => {
 
   const userDataString = localStorage.getItem('userData');
   const userData = userDataString ? JSON.parse(userDataString) : null;
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     const fetchMatches = async () => {
@@ -36,7 +39,7 @@ const PreferredMatches: React.FC<Props> = ({ selectedSports }) => {
       {loading && <p>Loading...</p>}
       {preferredMatches && userData.preferences && preferredMatches.length > 0 &&
         <>
-          <h1 className='text-xl font-bold p-2 rounded-lg m-1 display-block underline'>Your Picked:</h1>
+          <h1 className='text-xl font-bold p-2 rounded-lg m-1 display-block underline'>{t('Your Picked')}:</h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
             {/* {loading && <p>Loading...</p>} */}
             {preferredMatches.map((match) => (
@@ -45,12 +48,12 @@ const PreferredMatches: React.FC<Props> = ({ selectedSports }) => {
                   &#x25cf;Live
                 </div>}
                 {/* Display match details */}
-                <h2 className="text-xl font-bold mb-1">{match.sportName}</h2>
+                <h2 className="text-xl font-bold mb-1">{t(`${match.sportName}`)}</h2>
                 <h2 className="text-lg font-semibold mb-1">{match.name}</h2>
-                <p className="text-gray-700 mb-1">Location: {match.location}</p>
-                <p className="text-gray-700">Ends at: {new Date(match.endsAt).toLocaleString()}</p>
+                <p className="text-gray-700 mb-1">{t('Location')}: {match.location}</p>
+                <p className="text-gray-700">{t('Ends at')}: {formatDateTime(match.endsAt, i18n.language)}</p>
                 <div className="flex justify-between items-center mt-2">
-                  <p className="text-gray-600">Teams:</p>
+                  <p className="text-gray-600">{t('Teams')}:</p>
                   <div className="flex flex-wrap gap-1">
                     {match.teams.map((team) => (
                       <span key={team.id} className="bg-gray-200 px-1 rounded">{team.name}</span>
