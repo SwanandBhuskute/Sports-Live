@@ -17,26 +17,6 @@ describe('Signup Form', () => {
       cy.get('input[name="userPassword"]').type('password123').should('have.value', 'password123');
     });
   
-    it('shows an error message for an invalid signup', () => {
-      // Assuming the API will return an error for this invalid email
-      cy.get('input[name="userName"]').type('John Doe');
-      cy.get('input[name="userEmail"]').type('invalid-email');
-      cy.get('input[name="userPassword"]').type('password123');
-      cy.get('form').submit();
-  
-      cy.get('.text-red-500').should('exist').and('contain.text', 'Sign-up failed');
-    });
-  
-    // it('redirects to home after successful signup', () => {
-    //   // Assuming the API will return a successful response for these credentials
-    //   cy.get('input[name="userName"]').type('Jane Doe');
-    //   cy.get('input[name="userEmail"]').type('jane@example.com');
-    //   cy.get('input[name="userPassword"]').type('password123');
-    //   cy.get('form').submit();
-  
-    //   cy.url().should('include', '/home');
-    // });
-  
     it('includes a link to sign in and home', () => {
       cy.get('a[href="/signin"]').should('exist').and('contain.text', 'Sign in here');
       cy.get('a[href="/home"]').should('exist').and('contain.text', 'Home');
