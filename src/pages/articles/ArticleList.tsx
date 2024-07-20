@@ -101,7 +101,7 @@ const ArticleList: React.FC = () => {
                 <h2 className='text-xl font-semibold mb-2'>{article.title}</h2>
                 <button
                   onClick={() => handleReadMore(article)}
-                  className='bg-blue-500 text-white px-2 py-1 rounded-md text-sm hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300'
+                  className='bg-blue-600 text-white px-2 py-1 rounded-md text-sm hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300'
                 >
                   {t('Read more')}
                 </button>
