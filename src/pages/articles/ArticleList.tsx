@@ -68,6 +68,8 @@ const ArticleList: React.FC = () => {
         <h1 data-testid='cypress-title' className='bg-gray-800 text-white text-2xl font-bold flex justify-center p-2 rounded-lg m-2'>
           {t('Trending News')}
         </h1>
+        {/* <button className='bg-green-200 rounded-lg border border-black p-1 m-3' onClick={() => methodDoesNotExist()}>Break the world</button>
+        <button className='bg-green-200 rounded-lg border border-black p-1 m-3' onClick={() => methodDoesNotExist2()}>Break the world 2</button> */}
         <div className="bg-red-200 rounded-lg p-4 m-2 shadow-md">
           <div className="flex flex-wrap gap-4 mb-4 flex justify-center">
             {/* {loading && <p>Loading...</p>} */}

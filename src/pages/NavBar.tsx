@@ -29,7 +29,8 @@ const Navbar: React.FC = () => {
 
   const switchLanguage = (lang: string) => {
     i18n.changeLanguage(lang);
-    localStorage.setItem('language', lang); // Save the selected language to localStorage
+    localStorage.setItem('language', lang); // Saves the selected language to localStorage
+    // throw new Error("An error occured while changing locale");
   };
 
   return (

@@ -53,6 +53,14 @@ const MatchList: React.FC = () => {
     setSelectedMatch(null);
     setIsModalOpen(false);
     document.body.style.overflow = 'auto';
+
+  //   //@ts-ignore
+  //   // Deliberate runtime errors that look normal
+  //   const obj: any = {};
+  //   const fakeError = "error";
+  //   if (fakeError) {
+  //     throw new Error ("Error occured at readmore match article") // This will throw an error at runtime
+  //   }
   };
 
   const filteredMatches = selectedSport
