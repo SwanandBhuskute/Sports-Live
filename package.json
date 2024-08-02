@@ -16,10 +16,13 @@
     "@heroicons/react": "^2.1.1",
     "@sentry/react": "^8.20.0",
     "@types/react-router-dom": "^5.3.3",
+    "axios": "^1.7.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.0",
+    "react-markdown": "^9.0.1",
     "react-router-dom": "^6.22.3",
+    "remark-gfm": "^4.0.0",
     "vite-plugin-pwa": "^0.19.6"
   },
   "devDependencies": {
