@@ -83,7 +83,7 @@ const ArticleList: React.FC = () => {
                 {t(`${sport}`)}
               </button>
             ))}
-            {loading && <p>Loading...</p>}
+            {loading && <p>Loading.....</p>}
             {isLoggedIn && !loading && (
               <>
                 <button
