@@ -97,7 +97,7 @@ jobs:
             status_msg="failed❌"
           fi
 
-          echo "Overall pipeline status: $status_msg"
+          echo "Overall pipelineee status: $status_msg"
 
           echo "Sending notification to Discord with status: $status_msg"
 
