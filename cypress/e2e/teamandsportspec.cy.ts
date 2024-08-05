@@ -12,8 +12,6 @@ describe('TeamAndSportList Component', () => {
   
     it('should display articles after selecting a team', () => {
       cy.visit("http://localhost:5173/teams")
-      cy.get('select').eq(0).select(1)
-      cy.get('select').eq(1).select(1)
       cy.get('div').contains('Articles of your favourite team').should('exist')
     })
   })
