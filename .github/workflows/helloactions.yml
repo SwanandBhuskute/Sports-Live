@@ -92,9 +92,9 @@ jobs:
           echo "Build Docker image job status: $docker_status"
 
           if [ "$build_status" == "success" ] && [ "$docker_status" == "success" ]; then
-            status_msg="succeeded"
+            status_msg="succeeded✅"
           else
-            status_msg="failed"
+            status_msg="failed❌"
           fi
 
           echo "Overall pipeline status: $status_msg"
