@@ -70,7 +70,8 @@ const ArticleList: React.FC = () => {
         </h1>
         {/* <button className='bg-green-200 rounded-lg border border-black p-1 m-3' onClick={() => methodDoesNotExist()}>Break the world</button>
         <button className='bg-green-200 rounded-lg border border-black p-1 m-3' onClick={() => methodDoesNotExist2()}>Break the world 2</button> */}
-        <div className="bg-red-400 rounded-lg p-4 m-2 shadow-md">
+
+        <div className="bg-red-300 rounded-lg p-4 m-2 shadow-md">
           <div className="flex flex-wrap gap-4 mb-4 flex justify-center">
             {/* {loading && <p>Loading...</p>} */}
             {/* Create buttons for each sport */}
