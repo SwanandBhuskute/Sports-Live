@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { API_ENDPOINT } from '../../config/constants';
+import { API_ENDPOINT, GEMINI_ENDPOINT, GEMINI_API_KEY } from '../../config/constants';
 import Navbar from '../NavBar';
 import { useLocation } from 'react-router-dom';
 import TeamAndSportList from '../teamAndSports/TeamandSportList';
@@ -13,6 +13,8 @@ const ArticleList: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
   const [selectedSport, setSelectedSport] = useState<string | null>(null);
+  const [summary, setSummary] = useState<string | null>(null);
+  const [loadingSummary, setLoadingSummary] = useState<boolean>(false);
   const location = useLocation();
   const [loading, setLoading] = useState<boolean>(true); // Loading state
   const isLoggedIn = useAuthentication(); 
@@ -34,12 +36,10 @@ const ArticleList: React.FC = () => {
     fetchArticles();
   }, []);
 
-  
   const handleSportClick = (sport: string) => {
     setSelectedSport(sport === selectedSport ? null : sport);
   };
 
-  
   const handleReadMore = async (article: Article) => {
     try {
       const response = await fetch(`${API_ENDPOINT}/articles/${article.id}`);
@@ -53,13 +53,47 @@ const ArticleList: React.FC = () => {
 
   const handleCloseModal = () => {
     setSelectedArticle(null);
+    setSummary(null);
     document.body.style.overflow = 'auto';
   };
-  
+
+  const handleGenerateSummary = async (selectedArticle: Article) => {
+    if (!selectedArticle) return;
+
+    setLoadingSummary(true);
+    try {
+      const response = await fetch(`${GEMINI_ENDPOINT}:generateContent?key=${GEMINI_API_KEY}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                {
+                  text: `Give summarry for this: ${selectedArticle.content}`
+                }
+              ]
+            }
+          ]
+        }),
+      });
+
+      const data = await response.json();
+      const generatedSummary = data.candidates[0].content.parts[0].text;
+      setSummary(generatedSummary);
+    } catch (error) {
+      console.error('Error generating summary:', error);
+    } finally {
+      setLoadingSummary(false);
+    }
+  };
+
   const filteredArticles = selectedSport
-  ? articles.filter((article) => article.sport.name === selectedSport)
-  : articles;
-  
+    ? articles.filter((article) => article.sport.name === selectedSport)
+    : articles;
+
   return (
     <div className="flex">
       {/* Left Side (Article List) */}
@@ -68,12 +102,8 @@ const ArticleList: React.FC = () => {
         <h1 data-testid='cypress-title' className='bg-gray-800 text-white text-2xl font-bold flex justify-center p-2 rounded-lg m-2'>
           {t('Trending News')}
         </h1>
-        {/* <button className='bg-green-200 rounded-lg border border-black p-1 m-3' onClick={() => methodDoesNotExist()}>Break the world</button>
-        <button className='bg-green-200 rounded-lg border border-black p-1 m-3' onClick={() => methodDoesNotExist2()}>Break the world 2</button> */}
         <div className="bg-red-200 rounded-lg p-4 m-2 shadow-md">
           <div className="flex flex-wrap gap-4 mb-4 flex justify-center">
-            {/* {loading && <p>Loading...</p>} */}
-            {/* Create buttons for each sport */}
             {Array.from(new Set(articles.map((article) => article.sport.name))).map((sport) => (
               <button
                 key={sport}
@@ -89,7 +119,7 @@ const ArticleList: React.FC = () => {
                 <button
                   onClick={() => setSelectedSport(null)}
                   className={`px-6 py-3 rounded-md ${selectedSport === null ? 'bg-blue-600 text-white font-semibold' : 'bg-gray-400 text-gray-800 font-semibold'} hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300`}
-                  >
+                >
                   {t('Your choice')}
                 </button>
                 {!selectedSport && <PreferredArticles />}
@@ -130,6 +160,19 @@ const ArticleList: React.FC = () => {
                         <span key={team.id} className="bg-gray-200 px-2 py-1 rounded">{team.name}</span>
                       ))}
                     </div>
+                  </div>
+                )}
+                <button
+                  onClick={() => {handleGenerateSummary(selectedArticle)}}
+                  className='bg-green-600 text-white px-4 py-2 mt-3 rounded-md hover:bg-green-700 focus:outline-none focus:ring focus:border-green-300'
+                  disabled={loadingSummary}
+                >
+                  {loadingSummary ? t('Generating...') : t('Generate Summary')}
+                </button>
+                {summary && (
+                  <div className="mt-4 p-4 bg-white rounded shadow-md">
+                    <h3 className="text-xl font-semibold mb-2">{t('Summary')}</h3>
+                    <p>{summary}</p>
                   </div>
                 )}
                 <button
